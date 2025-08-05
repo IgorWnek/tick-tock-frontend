@@ -1,0 +1,80 @@
+definitions:
+  caches:
+    npm: $HOME/.npm
+  steps:
+    - step: &deploy-s3
+        image: tshio/awscli-docker-compose-pipelines:0.0.7
+        script:
+          - npm ci
+          - npm run build
+          - aws s3 sync ./build s3://$S3_BUCKET --delete
+          - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION --paths "/*"
+
+pipelines:
+  default:
+    - step:
+        image: node:20
+        caches:
+          - node
+          - npm
+        name: Run linter and tests
+        script:
+          - cp .env.dist .env
+          - npm ci
+          - npm run lint
+          - npm run coverage
+
+# START PLAYWRIGHT SPECIFIC CONFIG
+  pull-requests:
+    '**':
+      - step:
+          name: build and install
+          image: mcr.microsoft.com/playwright:v1.43.0-focal
+          caches:
+            - node
+            - npm
+          script:
+            - cp .env.dist .env
+            - npm ci
+            - npm run build:ci
+            - cd e2e && npm install && cd ..
+          artifacts:
+            - build/**
+            - e2e/node_modules/**
+      - parallel:
+        - step:
+            name: e2e - chrome
+            image: mcr.microsoft.com/playwright:v1.43.0-focal
+            caches:
+              - node
+            script:
+              - cp ./e2e/.env.dist ./e2e/.env
+              - cd e2e && npm run test:chrome cd ..
+        - step:
+            name: e2e - firefox
+            image: mcr.microsoft.com/playwright:v1.43.0-focal
+            caches:
+              - node
+            script:
+              - cp ./e2e/.env.dist ./e2e/.env
+              - cd e2e && npm run test:firefox cd ..
+        - step:
+            name: e2e - safari
+            image: mcr.microsoft.com/playwright:v1.43.0-focal
+            caches:
+              - node
+            script:
+              - cp ./e2e/.env.dist ./e2e/.env
+              - cd e2e && npm run test:safari cd ..
+        - step:
+            name: deploy to Staging
+            deployment: Staging
+            trigger: manual
+            <<: *deploy-s3
+# END PLAYWRIGHT SPECIFIC CONFIG
+
+  custom:
+    deploy-to-Staging:
+      - step:
+          name: deploy to Staging
+          <<: *deploy-s3

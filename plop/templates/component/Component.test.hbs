@@ -1,0 +1,13 @@
+import { render, screen } from 'tests';
+
+import { {{pascalCase name}} } from './{{pascalCase name}}';
+
+describe('{{pascalCase name}}', () => {
+  test('renders', () => {
+    render(<{{pascalCase name}} />);
+
+    const element = screen.getByText('{{pascalCase name}}');
+
+    expect(element).toBeInTheDocument();
+  });
+});

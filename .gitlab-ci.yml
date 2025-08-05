@@ -1,0 +1,103 @@
+# START PLAYWRIGHT SPECIFIC CONFIG
+default:
+  image: mcr.microsoft.com/playwright:v1.43.0-focal
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+# cache using branch name
+# https://gitlab.com/help/ci/caching/index.md
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - node_modules
+    - e2e/node_modules
+
+spa_test:
+  stage: test
+  script:
+    - cp .env.dist .env
+    - npm install
+    - npm run lint
+    - npm run coverage
+
+e2e_build:
+  stage: build
+  script:
+    - cp .env.dist .env
+    - npm ci
+    - npm run build:ci
+    - cd e2e && npm install && cd ..
+  artifacts:
+    paths:
+      - build/**
+      - e2e/node_modules/**
+  only:
+    - merge_requests
+
+e2e_chrome:
+  stage: test
+  before_script:
+    - cp ./e2e/.env.dist ./e2e/.env
+    - cd e2e
+  script:
+    - npm run test:chrome
+  artifacts:
+    when: always
+    paths:
+      - e2e/test-report/
+      - e2e/test-results/
+  only:
+    - merge_requests
+
+e2e_firefox:
+  stage: test
+  before_script:
+    - cp ./e2e/.env.dist ./e2e/.env
+    - cd e2e
+  script:
+    - npm run test:firefox
+  artifacts:
+    when: always
+    paths:
+      - e2e/test-report/
+      - e2e/test-results/
+  only:
+    - merge_requests
+
+e2e_safari:
+  stage: test
+  before_script:
+    - cp ./e2e/.env.dist ./e2e/.env
+    - cd e2e
+  script:
+    - npm run test:safari
+  artifacts:
+    when: always
+    paths:
+      - e2e/test-report/
+      - e2e/test-results/
+  only:
+    - merge_requests
+# END PLAYWRIGHT SPECIFIC CONFIG
+
+
+deploy_to_staging:
+  stage: deploy
+  environment: staging
+  image:
+    name: tshio/awscli-docker-compose-pipelines:0.0.7
+    entrypoint: ['']
+  script:
+    - npm ci
+    - npm run build
+    - aws s3 sync ./build s3://"$S3_BUCKET" --delete
+    - aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION" --paths "/*"
+  rules:
+    - when: manual
