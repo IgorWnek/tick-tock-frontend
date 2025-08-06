@@ -5,6 +5,7 @@
 Please read through the guideline below.
 
 ## Opening an Issue
+
 Something is not working as it should?
 
 Do you think you've found a bug in the starter, but you're not sure if you can fix it yourself?
@@ -12,6 +13,7 @@ Do you think you've found a bug in the starter, but you're not sure if you can f
 #### [Open a new issue!](https://github.com/TheSoftwareHouse/react-starter-boilerplate/issues/new) 🙂
 
 When you are opening a new issue in this repository, please remember about few things:
+
 - Describe as much as you can about the issue you are experiencing,
 - All kinds of screenshots and videos showing the issue, are also very welcome.
 
@@ -26,7 +28,7 @@ If you want to resolve one of the issues reported or add new functionality to th
 You need to open new branch where you will implement new functionality or add new improvement.
 Please note that we are validating branch names on git hooks. Branch names in this project must adhere following contract:
 
-```
+```regex
 ^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\/[a-zA-Z0-9_.-]+){1,2}|changeset-release/master)$
 ```
 

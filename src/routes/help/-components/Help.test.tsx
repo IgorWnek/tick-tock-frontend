@@ -6,7 +6,7 @@ describe('Help', () => {
   test('renders heading', async () => {
     render(<Help />);
 
-    const element = await screen.findByText(/Help/);
+    const element = await screen.findByText('Help & Documentation');
     expect(element).toBeInTheDocument();
   });
 });

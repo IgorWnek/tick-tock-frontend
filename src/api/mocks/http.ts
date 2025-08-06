@@ -1,6 +1,6 @@
 import { http as baseHttp } from 'msw';
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL === 'mock' ? 'http://localhost:3001' : import.meta.env.VITE_API_URL;
 
 const createRestHandler = <MethodType extends keyof typeof baseHttp>(
   method: MethodType,

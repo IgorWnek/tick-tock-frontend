@@ -6,7 +6,8 @@ import {
   responseSuccessInterceptor,
 } from 'context/apiClient/apiClientContextController/interceptors/responseInterceptors';
 
-export const BASE_URL = import.meta.env.VITE_API_URL;
+export const BASE_URL =
+  import.meta.env.VITE_API_URL === 'mock' ? 'http://localhost:3001' : import.meta.env.VITE_API_URL;
 
 const axiosClient = axios.create({
   headers: {

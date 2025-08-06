@@ -13,14 +13,15 @@ const getUsersInfinite =
   (client: AxiosInstance, { count = '5' }: GetUsersInfiniteArgs) =>
   async ({ pageParam = '1' }) => {
     const queryParams = stringify({ page: pageParam, count }, { addQueryPrefix: true });
-    return (await client.get<GetUsersResponse>(`/users/${queryParams}`)).data;
+    const url = `/users${queryParams}`;
+    return (await client.get<GetUsersResponse>(url)).data;
   };
 
 const getUsersList =
   (client: AxiosInstance, { page = '1' }: GetUsersListArgs) =>
   async () => {
     const queryParams = stringify({ page, count: 5 }, { addQueryPrefix: true });
-    return (await client.get<GetUsersResponse>(`/users/${queryParams}`)).data;
+    return (await client.get<GetUsersResponse>(`/users${queryParams}`)).data;
   };
 
 export const authQueries = {
