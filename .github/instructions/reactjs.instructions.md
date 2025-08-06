@@ -93,7 +93,7 @@ import { useNavigate } from '@tanstack/react-router';
 
 import { useMutation } from 'hooks/useMutation/useMutation';
 import { useAuth } from 'hooks/useAuth/useAuth';
-import { Translation } from 'ui/translation/Translation';
+import { Translation } from '@/components/ui/translation';
 
 import { ComponentProps } from './Component.types';
 

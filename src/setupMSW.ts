@@ -4,5 +4,10 @@ export async function enableMocking() {
   }
   // static import will cause msw to be bundled into production code and significantly increase bundle size
   const { worker } = await import('api/mocks/mock-worker');
-  return worker.start({ onUnhandledRequest: 'bypass' });
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  });
 }

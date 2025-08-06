@@ -1,6 +1,6 @@
 import { useParams } from '@tanstack/react-router';
 
-import { CodeBlock } from 'ui/codeBlock/CodeBlock';
+import { CodeBlock } from '@/components/ui/code-block';
 
 export const User = () => {
   const params = useParams({ from: '/users/$id/' });

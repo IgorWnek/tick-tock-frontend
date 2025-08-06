@@ -12,7 +12,7 @@ export const LocaleContextController = ({ children }: LocaleContextControllerPro
   const [locale, setLocale] = useState<AppLocale>(defaultLocale);
 
   return (
-    <IntlProvider defaultLocale={defaultLocale} locale={locale} messages={translations[locale]}>
+    <IntlProvider defaultLocale={defaultLocale} locale={locale} messages={translations[locale]} onError={() => {}}>
       <LocaleContext.Provider value={{ defaultLocale, locale, setLocale }}>{children}</LocaleContext.Provider>
     </IntlProvider>
   );

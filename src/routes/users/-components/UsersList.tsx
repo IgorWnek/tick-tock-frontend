@@ -1,9 +1,10 @@
 import { useNavigate, getRouteApi } from '@tanstack/react-router';
 
-import { CodeBlock } from 'ui/codeBlock/CodeBlock';
 import { useQuery } from 'hooks/useQuery/useQuery';
 import { UserSortType } from 'routes/users';
 import { authQueries } from 'api/actions/auth/auth.queries';
+
+import { CodeBlock } from '@/components/ui/code-block';
 
 const routeApi = getRouteApi('/users/');
 
@@ -14,7 +15,7 @@ export const UsersList = () => {
   const { data: usersResponse, isFetched: areUsersFetched } = useQuery({
     ...authQueries.list({ page: page.toString() }),
     select: (data) => {
-      return { ...data, users: data.users.sort((a, b) => (sort === 'desc' ? +b.id - +a.id : +a.id - +b.id)) };
+      return { ...data, users: data.users.toSorted((a, b) => (sort === 'desc' ? +b.id - +a.id : +a.id - +b.id)) };
     },
   });
 

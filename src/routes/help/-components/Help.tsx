@@ -1,4 +1,4 @@
-import { LocationInfo } from 'ui/locationInfo/LocationInfo';
+import { LocationInfo } from '@/components/ui/location-info';
 
 export const Help = () => {
   return (
