@@ -33,6 +33,11 @@ export const Layout = () => {
             </Link>
           </li>
           <li className="app__menu-item">
+            <Link className="app__menu-link" to={'/demo'}>
+              Demo
+            </Link>
+          </li>
+          <li className="app__menu-item">
             <Link className="app__menu-link" to={'/about'}>
               About
             </Link>

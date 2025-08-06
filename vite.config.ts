@@ -5,6 +5,8 @@ import svgrPlugin from 'vite-plugin-svgr';
 import { configDefaults } from 'vitest/config';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'path';
 
 const manualChunks = (id: string) => {
   if (id.includes('@sentry')) {
@@ -19,8 +21,14 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgrPlugin(),
     tanstackRouter(),
+    tailwindcss(),
     process.env.ANALYZE ? (visualizer({ open: true, gzipSize: true }) as PluginOption) : null,
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   server: {
     open: true,
     port: 3000,

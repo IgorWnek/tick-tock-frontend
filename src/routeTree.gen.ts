@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
@@ -18,6 +19,11 @@ import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 
 const HelpIndexLazyRouteImport = createFileRoute('/help/')()
 
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -46,6 +52,7 @@ const UsersIdIndexRoute = UsersIdIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/about': typeof AboutIndexRoute
   '/users': typeof UsersIndexRoute
   '/help': typeof HelpIndexLazyRoute
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/about': typeof AboutIndexRoute
   '/users': typeof UsersIndexRoute
   '/help': typeof HelpIndexLazyRoute
@@ -61,6 +69,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/about/': typeof AboutIndexRoute
   '/users/': typeof UsersIndexRoute
   '/help/': typeof HelpIndexLazyRoute
@@ -68,14 +77,22 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/users' | '/help' | '/users/$id'
+  fullPaths: '/' | '/demo' | '/about' | '/users' | '/help' | '/users/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/users' | '/help' | '/users/$id'
-  id: '__root__' | '/' | '/about/' | '/users/' | '/help/' | '/users/$id/'
+  to: '/' | '/demo' | '/about' | '/users' | '/help' | '/users/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/demo'
+    | '/about/'
+    | '/users/'
+    | '/help/'
+    | '/users/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DemoRoute: typeof DemoRoute
   AboutIndexRoute: typeof AboutIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
   HelpIndexLazyRoute: typeof HelpIndexLazyRoute
@@ -84,6 +101,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -124,6 +148,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DemoRoute: DemoRoute,
   AboutIndexRoute: AboutIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
   HelpIndexLazyRoute: HelpIndexLazyRoute,

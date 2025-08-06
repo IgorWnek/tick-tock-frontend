@@ -8,6 +8,10 @@ import { useUsers } from 'hooks/useUsers/useUsers';
 import { Translation } from 'ui/translation/Translation';
 import { LocationInfo } from 'ui/locationInfo/LocationInfo';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 export const Home = () => {
   const { locale, setLocale } = useLocale();
   const { user, login, logout, isAuthenticated, isAuthenticating } = useAuth();
@@ -89,6 +93,26 @@ export const Home = () => {
             Load more
           </button>
         </div>
+      </div>
+      <hr />
+      <div>
+        <p>Shadcn/UI Components Demo &#128640;</p>
+        <Card className="max-w-md mx-auto mt-4">
+          <CardHeader>
+            <CardTitle>Component Showcase</CardTitle>
+            <CardDescription>Testing TailwindCSS 4 + Shadcn/UI integration</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Input placeholder="Type something here..." />
+            <div className="flex gap-2 flex-wrap">
+              <Button onClick={() => navigate({ to: '/users' })}>Go to Users</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="destructive" size="sm">
+                Destructive
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </>
   );
