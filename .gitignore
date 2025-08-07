@@ -19,6 +19,7 @@
 # editor files
 .idea/
 .vscode/
+!.vscode/mcp.json
 
 npm-debug.log*
 yarn-debug.log*
@@ -31,3 +32,6 @@ e2e/testsResults
 
 .credentials.json
 stats.html
+
+# MCP Servers
+.mcp/memory.json
