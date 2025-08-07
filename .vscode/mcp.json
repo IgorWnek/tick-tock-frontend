@@ -6,6 +6,16 @@
       "env": {
         "MEMORY_FILE_PATH": "${workspaceFolder}/.mcp/memory.json"
       }
+    },
+    "sequentialthinking": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
     }
   }
 }
