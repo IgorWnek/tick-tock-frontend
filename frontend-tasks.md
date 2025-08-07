@@ -8,7 +8,18 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 ## Tech Stack Integration
 
 - **React 19**: Components, hooks, actions, and transitions
-- **TypeScript**: Full type safety and strict mode
+- **TypeScript**: Full type safety and strict m## Development Tasks Overview
+
+### 🧹 Immediate Cleanup Required
+
+**Before starting MVP development**, remove all boilerplate routes and components that are not part of the Tick-Tock MVP:
+
+- **Remove**: Demo, About, Users, Help routes (not in MVP spec)
+- **Update**: Layout component to reflect Tick-Tock branding instead of React starter
+- **Create**: Missing routes for `/log-entry` and `/day/$date`
+- **Convert**: Home component to proper Dashboard with calendar grid
+
+### 🚀 PoC Enhancement Options
 - **TanStack Router**: File-based routing with type-safe navigation
 - **TanStack Query**: Server state management with MSW integration
 - **TailwindCSS 4**: Modern styling with CSS variables
@@ -18,6 +29,39 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 ---
 
 ## Phase 1: Core MVP Features (Priority Tasks)
+
+### 🧹 Cleanup & Foundation (Priority: High)
+
+#### 0. Remove Boilerplate Routes & Layout
+
+**Priority**: High | **Effort**: Small | **PoC Value**: Medium
+
+- [ ] Remove unnecessary boilerplate routes:
+  - Delete `/demo` route and `ShadcnDemo` component
+  - **Keep `/about` but update content** to describe Tick-Tock + tech stack
+  - Delete `/users` routes and `UsersList`/`User` components
+  - Delete `/help` route and `Help` component
+- [ ] Clean up main layout:
+  - Remove React/Vite branding from header
+  - Replace generic navigation with Tick-Tock appropriate nav
+  - Update layout styling for time tracking app
+  - Remove boilerplate CSS classes and styling
+- [ ] Update home route to be the dashboard
+- [ ] **Testing**: Ensure removed routes don't break navigation
+
+**Files to delete**:
+
+- `src/routes/demo.tsx`
+- `src/routes/-components/ShadcnDemo.tsx`
+- `src/routes/users/` (entire folder)
+- `src/routes/help/` (entire folder)
+
+**Files to modify**:
+
+- `src/routes/-layout/Layout.tsx` (complete rewrite for Tick-Tock)
+- `src/routes/-layout/Layout.css` (update styling)
+- `src/routes/-components/Home.tsx` (convert to Dashboard)
+- `src/routes/about/-components/About.tsx` (update to describe Tick-Tock + keep tech stack)
 
 ### 🎯 Essential Features
 
@@ -42,7 +86,23 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/dashboard/CalendarDay.tsx`
 - `src/api/mocks/calendar.handlers.ts`
 
-#### 2. "Log Today's Work" Button & Navigation
+#### 2. Create Missing Routes for MVP
+
+**Priority**: High | **Effort**: Small | **PoC Value**: High
+
+- [ ] Create `/log-entry` or `/log-today` route for time log input
+- [ ] Create `/day/$date` route for day detail view
+- [ ] Update route tree generation and navigation
+- [ ] Add proper TypeScript route typing
+- [ ] **Testing**: Route navigation and parameter handling
+
+**Files to create**:
+
+- `src/routes/log-entry.tsx` (or `log-today.tsx`)
+- `src/routes/day/$date.tsx`
+- Update `src/routeTree.gen.ts`
+
+#### 3. "Log Today's Work" Button & Navigation
 
 **Priority**: High | **Effort**: Small | **PoC Value**: Medium
 
@@ -58,7 +118,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/dashboard/LogTodayButton.tsx`
 - `src/routes/log-entry.tsx`
 
-#### 3. Time Log Input Interface
+#### 4. Time Log Input Interface
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: High
 
@@ -78,7 +138,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/log-entry/ExamplePrompts.tsx`
 - `src/api/mocks/parsing.handlers.ts`
 
-#### 4. Draft Review Interface
+#### 5. Draft Review Interface
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: High
 
@@ -104,7 +164,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🏗️ Core Application Structure
 
-#### 5. Application Layout & Navigation
+#### 6. Application Layout & Navigation
 
 **Priority**: Medium | **Effort**: Medium | **PoC Value**: Medium
 
@@ -122,7 +182,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/layout/Navigation.tsx`
 - `src/components/layout/UserProfile.tsx`
 
-#### 6. Refinement Interface
+#### 7. Refinement Interface
 
 **Priority**: Medium | **Effort**: Medium | **PoC Value**: High
 
@@ -140,7 +200,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/log-entry/RefinementModal.tsx`
 - `src/components/log-entry/RefinementInput.tsx`
 
-#### 7. Calendar Day Detail View
+#### 8. Calendar Day Detail View
 
 **Priority**: Medium | **Effort**: Small | **PoC Value**: Medium
 
@@ -159,7 +219,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🔧 State Management & Data Flow
 
-#### 8. TanStack Query Integration
+#### 9. TanStack Query Integration
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: Low
 
@@ -183,7 +243,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/hooks/useShipEntry.ts`
 - `src/hooks/useDayEntries.ts`
 
-#### 9. MSW API Mocking Setup
+#### 10. MSW API Mocking Setup
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: Low
 
@@ -208,7 +268,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🎨 UI/UX Polish
 
-#### 10. Design System Integration
+#### 11. Design System Integration
 
 **Priority**: Medium | **Effort**: Small | **PoC Value**: Medium
 
@@ -224,7 +284,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/components/ui/LoadingSkeleton.tsx`
 - `tailwind.config.ts` updates
 
-#### 11. Error Handling & User Feedback
+#### 12. Error Handling & User Feedback
 
 **Priority**: Medium | **Effort**: Small | **PoC Value**: Low
 
@@ -248,7 +308,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🚀 Advanced Features
 
-#### 12. Keyboard Shortcuts & Accessibility
+#### 13. Keyboard Shortcuts & Accessibility
 
 **Priority**: Low | **Effort**: Medium | **PoC Value**: Medium
 
@@ -259,7 +319,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [ ] Focus trap management in modals
 - [ ] **Testing**: Accessibility automated tests
 
-#### 13. Animations & Micro-interactions
+#### 14. Animations & Micro-interactions
 
 **Priority**: Low | **Effort**: Small | **PoC Value**: High
 
@@ -270,7 +330,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [ ] Loading state animations
 - [ ] **Testing**: Animation performance tests
 
-#### 14. Mobile Optimization
+#### 15. Mobile Optimization
 
 **Priority**: Low | **Effort**: Medium | **PoC Value**: Medium
 
@@ -287,7 +347,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🧪 Testing Strategy
 
-#### 15. Unit Testing
+#### 16. Unit Testing
 
 **Priority**: Medium | **Effort**: Medium | **PoC Value**: Low
 
@@ -298,7 +358,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [ ] Achieve >80% code coverage
 - [ ] **Files**: `*.test.tsx` for all components
 
-#### 16. Integration Testing
+#### 17. Integration Testing
 
 **Priority**: Medium | **Effort**: Medium | **PoC Value**: Low
 
@@ -308,7 +368,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [ ] Form submission end-to-end tests
 - [ ] **Files**: `src/tests/integration/`
 
-#### 17. E2E Testing Setup
+#### 18. E2E Testing Setup
 
 **Priority**: Low | **Effort**: Medium | **PoC Value**: Low
 
@@ -323,7 +383,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🔧 Development Tools
 
-#### 18. Development Environment
+#### 19. Development Environment
 
 **Priority**: High | **Effort**: Small | **PoC Value**: Low
 
@@ -333,7 +393,7 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [ ] Development scripts optimization
 - [ ] **Files**: Configuration files
 
-#### 19. Build & Deployment
+#### 20. Build & Deployment
 
 **Priority**: Low | **Effort**: Small | **PoC Value**: Low
 

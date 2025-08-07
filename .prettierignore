@@ -1,3 +1,4 @@
 *.hbs
 *.js
 *.instructions.md
+.github/prompts/**
