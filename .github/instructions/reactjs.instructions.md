@@ -1,5 +1,6 @@
 ---
 applyTo: '**/*.tsx, **/*.ts, !**/*.test.tsx, !**/*.test.ts, !**/node_modules/**, !**/dist/**, !**/build/**'
+description: 'Comprehensive React 19 and TypeScript coding standards, patterns, and best practices for component development, hooks usage, testing, and code organization'
 ---
 
 # React 19 TypeScript Best Practices
