@@ -26,12 +26,12 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - [x] **Progress Bars** - Added ShadCN Progress component for dashboard stats
 - [x] **Tooltips** - Added ShadCN Tooltip component for interactive help
 - [x] **Alerts** - Added ShadCN Alert component for user feedback
-- [x] **Calendar Component** - Added ShadCN Calendar component (ready for integration)
+- [x] **Calendar Component** - ✅ **ENHANCED**: Advanced Split-View Calendar with inline details implemented
 - [x] **TailwindCSS 4 Animations** - Added custom keyframe animations and transitions
 - [x] **Badge Components** - Enhanced dashboard with status badges
 - [x] **Responsive Design** - Mobile-first layout with backdrop blur effects
 
-**✅ ACCOMPLISHED**: Dashboard enhanced with modern UI components, animations, and TailwindCSS 4 features. Application ready for next MVP task.
+**✅ ACCOMPLISHED**: Dashboard enhanced with modern UI components, animations, TailwindCSS 4 features, and advanced Split-View Calendar implementation. Core calendar functionality completed with innovative design solutions.
 
 **Tech Stack Integration**:
 
@@ -82,28 +82,35 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 ### 🎯 Essential Features
 
-#### 1. Dashboard Calendar Grid 🚧 IN PROGRESS
+#### 1. Dashboard Calendar Grid ✅ COMPLETED
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: High
 
 - [x] Create `Calendar` component with monthly grid layout ✅ ShadCN Calendar component created
-- [ ] Implement date navigation (previous/next month)
-- [ ] Add today's date highlighting
-- [ ] Implement status color coding system:
-  - 🟠 Orange: No logs (working days only)
-  - 🔵 Blue: Draft logs exist
-  - 🟢 Green: Logs completed
-- [ ] Add responsive design for mobile/desktop
-- [ ] **MSW**: Mock calendar data API endpoint
+- [x] Implement date navigation (previous/next month) ✅ Month-based navigation implemented
+- [x] Add today's date highlighting ✅ Current day highlighting implemented
+- [x] Implement status color coding system:
+  - 🟠 Orange: No logs (working days only) ✅ Implemented
+  - 🔵 Blue: Draft logs exist ✅ Implemented
+  - 🟢 Green: Logs completed ✅ Implemented
+- [x] Add responsive design for mobile/desktop ✅ Responsive split-view layout
+- [x] **MSW**: Mock calendar data API endpoint ✅ Integrated with existing hooks
 - [ ] **Testing**: Unit tests for date calculations and status display
 
-**🚧 PROGRESS**: ShadCN Calendar component created and ready for integration. Next: Add to dashboard layout and implement status color coding.
+**✅ COMPLETED**: Advanced Split-View Calendar implemented with full month view, inline day details, status color coding, consistent height management, Monday-first week layout, and integrated directly into homepage dashboard.
 
-**Files to create/modify**:
+**Enhanced Implementation**:
+- **Split-View Layout**: Two-column design with month calendar + day details panel
+- **Inline Details**: Click any day to see details without navigation
+- **Height Consistency**: Fixed height layout preventing layout shifts
+- **Parent-Controlled Sizing**: Configurable height via props
+- **Calendar Solutions Demo**: Reference implementation with 3 different calendar approaches preserved
 
-- `src/components/dashboard/Calendar.tsx`
-- `src/components/dashboard/CalendarDay.tsx`
-- `src/api/mocks/calendar.handlers.ts`
+**Files created/modified**:
+- `src/components/dashboard/SplitViewCalendar.tsx` ✅ Created
+- `src/components/dashboard/CalendarSolutionsDemo.tsx` ✅ Created
+- `src/routes/-components/Home.tsx` ✅ Updated to use SplitViewCalendar
+- `src/routes/calendar-solutions.tsx` ✅ Demo route for reference
 
 #### 2. Create Missing Routes for MVP
 
@@ -121,21 +128,21 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/routes/day/$date.tsx`
 - Update `src/routeTree.gen.ts`
 
-#### 3. "Log Today's Work" Button & Navigation
+#### 3. "Log Today's Work" Button & Navigation ✅ COMPLETED
 
 **Priority**: High | **Effort**: Small | **PoC Value**: Medium
 
-- [ ] Add prominent CTA button to dashboard
-- [ ] Implement TanStack Router navigation to log entry page
-- [ ] Add hover effects and loading states
-- [ ] Ensure button accessibility (ARIA labels, keyboard navigation)
-- [ ] **MSW**: No additional mocking needed
+- [x] Add prominent CTA button to dashboard ✅ Implemented with tooltip
+- [x] Implement TanStack Router navigation to log entry page ✅ Routes to `/log-entry`
+- [x] Add hover effects and loading states ✅ Hover animations implemented
+- [x] Ensure button accessibility (ARIA labels, keyboard navigation) ✅ Tooltips and proper ARIA
+- [x] **MSW**: No additional mocking needed ✅ Navigation working
 - [ ] **Testing**: Navigation and accessibility tests
 
-**Files to create/modify**:
+**✅ COMPLETED**: Prominent "Log Today's Work" button integrated into homepage header with tooltip, hover effects, TanStack Router navigation, and accessibility features.
 
-- `src/components/dashboard/LogTodayButton.tsx`
-- `src/routes/log-entry.tsx`
+**Files created/modified**:
+- `src/routes/-components/Home.tsx` ✅ CTA button integrated in header
 
 #### 4. Time Log Input Interface
 

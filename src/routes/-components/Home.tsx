@@ -1,11 +1,13 @@
-import { Calendar, Plus, TrendingUp, Clock, CalendarDays, Info } from 'lucide-react';
+import { Plus, TrendingUp, Clock, CalendarDays, Info, Palette } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { SplitViewCalendar } from '@/components/dashboard';
 
 export const Home = () => {
   return (
@@ -19,64 +21,45 @@ export const Home = () => {
           will show your progress across the month.
         </AlertDescription>
       </Alert>
+
       {/* Dashboard Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground">Track your time and manage your work logs</p>
         </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size="lg" className="gap-2 hover:scale-105 transition-transform duration-200">
-              <Plus className="h-4 w-4" />
-              Log Today&apos;s Work
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Start logging your time with natural language input</p>
-          </TooltipContent>
-        </Tooltip>
+        <div className="flex items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="lg" className="gap-2" asChild>
+                <Link to="/calendar-solutions">
+                  <Palette className="h-4 w-4" />
+                  Calendar Solutions
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View 3 innovative calendar design solutions</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button size="lg" className="gap-2 hover:scale-105 transition-transform duration-200" asChild>
+                <Link to="/log-entry">
+                  <Plus className="h-4 w-4" />
+                  Log Today&apos;s Work
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Start logging your time with natural language input</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
 
-      {/* Calendar Grid Placeholder */}
-      <Card className="hover:shadow-lg transition-shadow duration-300">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Time Log Calendar
-          </CardTitle>
-          <CardDescription>Track your daily time logging progress across the month</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-96 bg-gradient-to-br from-muted via-muted/80 to-muted/60 rounded-lg relative overflow-hidden">
-            {/* Background pattern for visual interest */}
-            <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/5 to-background/10" />
-            <div className="relative text-center space-y-4 z-10">
-              <Calendar className="h-16 w-16 text-muted-foreground mx-auto animate-pulse-slow" />
-              <div className="space-y-2">
-                <p className="text-lg font-medium text-muted-foreground">Calendar grid will be implemented here</p>
-                <div className="flex items-center justify-center gap-4 text-sm">
-                  <div className="flex items-center gap-2 hover:scale-110 transition-transform duration-200">
-                    <div className="w-3 h-3 bg-orange-500 rounded-full animate-pulse" />
-                    <span className="text-muted-foreground">No logs</span>
-                  </div>
-                  <div className="flex items-center gap-2 hover:scale-110 transition-transform duration-200">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
-                    <span className="text-muted-foreground">Draft logs</span>
-                  </div>
-                  <div className="flex items-center gap-2 hover:scale-110 transition-transform duration-200">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-muted-foreground">Completed logs</span>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground max-w-md">
-                  The calendar will show your daily time logging status and allow quick navigation to any day
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Split-View Calendar */}
+      <SplitViewCalendar showInlineDetails={true} maxHeight="h-[650px]" />
 
       {/* Status Overview */}
       <div className="grid gap-4 md:grid-cols-3">

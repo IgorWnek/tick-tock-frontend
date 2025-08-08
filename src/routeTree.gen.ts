@@ -9,9 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LogEntryRouteImport } from './routes/log-entry'
+import { Route as CalendarSolutionsRouteImport } from './routes/calendar-solutions'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
+import { Route as DayDateRouteImport } from './routes/day/$date'
 
+const LogEntryRoute = LogEntryRouteImport.update({
+  id: '/log-entry',
+  path: '/log-entry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarSolutionsRoute = CalendarSolutionsRouteImport.update({
+  id: '/calendar-solutions',
+  path: '/calendar-solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -22,35 +35,77 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: '/about/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DayDateRoute = DayDateRouteImport.update({
+  id: '/day/$date',
+  path: '/day/$date',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendar-solutions': typeof CalendarSolutionsRoute
+  '/log-entry': typeof LogEntryRoute
+  '/day/$date': typeof DayDateRoute
   '/about': typeof AboutIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendar-solutions': typeof CalendarSolutionsRoute
+  '/log-entry': typeof LogEntryRoute
+  '/day/$date': typeof DayDateRoute
   '/about': typeof AboutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calendar-solutions': typeof CalendarSolutionsRoute
+  '/log-entry': typeof LogEntryRoute
+  '/day/$date': typeof DayDateRoute
   '/about/': typeof AboutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/calendar-solutions'
+    | '/log-entry'
+    | '/day/$date'
+    | '/about'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about/'
+  to: '/' | '/calendar-solutions' | '/log-entry' | '/day/$date' | '/about'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendar-solutions'
+    | '/log-entry'
+    | '/day/$date'
+    | '/about/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarSolutionsRoute: typeof CalendarSolutionsRoute
+  LogEntryRoute: typeof LogEntryRoute
+  DayDateRoute: typeof DayDateRoute
   AboutIndexRoute: typeof AboutIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/log-entry': {
+      id: '/log-entry'
+      path: '/log-entry'
+      fullPath: '/log-entry'
+      preLoaderRoute: typeof LogEntryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar-solutions': {
+      id: '/calendar-solutions'
+      path: '/calendar-solutions'
+      fullPath: '/calendar-solutions'
+      preLoaderRoute: typeof CalendarSolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +120,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/day/$date': {
+      id: '/day/$date'
+      path: '/day/$date'
+      fullPath: '/day/$date'
+      preLoaderRoute: typeof DayDateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarSolutionsRoute: CalendarSolutionsRoute,
+  LogEntryRoute: LogEntryRoute,
+  DayDateRoute: DayDateRoute,
   AboutIndexRoute: AboutIndexRoute,
 }
 export const routeTree = rootRouteImport
