@@ -6,7 +6,9 @@ import {
   LoginMutationArguments,
   LoginMutationResponse,
 } from 'api/actions/auth/auth.types';
+import { GetCalendarDataResponse, GetDayEntriesResponse } from 'api/actions/calendar/calendar.types';
 
+import { calendarHandlers } from './calendar.handlers';
 import { http } from './http';
 
 const authorizeHandler = http.post<LoginMutationArguments, never, LoginMutationResponse>('/authorize', async () =>
@@ -56,4 +58,21 @@ const usersHandler = http.get<PathParams, DefaultBodyType, GetUsersResponse>('/u
   return HttpResponse.json({ users: paginatedUsers, nextPage: nextPageCursor }, { status: 200 });
 });
 
-export const handlers = [authorizeHandler, meHandler, usersHandler];
+// Calendar handlers
+const calendarDataHandler = http.get<{ month: string }, DefaultBodyType, GetCalendarDataResponse>(
+  '/api/time-logs/calendar/:month',
+  async ({ params }) => {
+    const response = await calendarHandlers.getCalendarData(params.month);
+    return HttpResponse.json(response, { status: 200 });
+  },
+);
+
+const dayEntriesHandler = http.get<{ date: string }, DefaultBodyType, GetDayEntriesResponse>(
+  '/api/time-logs/day/:date',
+  async ({ params }) => {
+    const response = await calendarHandlers.getDayEntries(params.date);
+    return HttpResponse.json(response, { status: 200 });
+  },
+);
+
+export const handlers = [authorizeHandler, meHandler, usersHandler, calendarDataHandler, dayEntriesHandler];
