@@ -8,35 +8,13 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DemoRouteImport } from './routes/demo'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
-import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 
-const HelpIndexLazyRouteImport = createFileRoute('/help/')()
-
-const DemoRoute = DemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpIndexLazyRoute = HelpIndexLazyRouteImport.update({
-  id: '/help/',
-  path: '/help/',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/help/index.lazy').then((d) => d.Route))
-const UsersIndexRoute = UsersIndexRouteImport.update({
-  id: '/users/',
-  path: '/users/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
@@ -44,89 +22,40 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: '/about/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsersIdIndexRoute = UsersIdIndexRouteImport.update({
-  id: '/users/$id/',
-  path: '/users/$id/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo': typeof DemoRoute
   '/about': typeof AboutIndexRoute
-  '/users': typeof UsersIndexRoute
-  '/help': typeof HelpIndexLazyRoute
-  '/users/$id': typeof UsersIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo': typeof DemoRoute
   '/about': typeof AboutIndexRoute
-  '/users': typeof UsersIndexRoute
-  '/help': typeof HelpIndexLazyRoute
-  '/users/$id': typeof UsersIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo': typeof DemoRoute
   '/about/': typeof AboutIndexRoute
-  '/users/': typeof UsersIndexRoute
-  '/help/': typeof HelpIndexLazyRoute
-  '/users/$id/': typeof UsersIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo' | '/about' | '/users' | '/help' | '/users/$id'
+  fullPaths: '/' | '/about'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo' | '/about' | '/users' | '/help' | '/users/$id'
-  id:
-    | '__root__'
-    | '/'
-    | '/demo'
-    | '/about/'
-    | '/users/'
-    | '/help/'
-    | '/users/$id/'
+  to: '/' | '/about'
+  id: '__root__' | '/' | '/about/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoRoute: typeof DemoRoute
   AboutIndexRoute: typeof AboutIndexRoute
-  UsersIndexRoute: typeof UsersIndexRoute
-  HelpIndexLazyRoute: typeof HelpIndexLazyRoute
-  UsersIdIndexRoute: typeof UsersIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/demo': {
-      id: '/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof DemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/help/': {
-      id: '/help/'
-      path: '/help'
-      fullPath: '/help'
-      preLoaderRoute: typeof HelpIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/users/': {
-      id: '/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about/': {
@@ -136,23 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users/$id/': {
-      id: '/users/$id/'
-      path: '/users/$id'
-      fullPath: '/users/$id'
-      preLoaderRoute: typeof UsersIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoRoute: DemoRoute,
   AboutIndexRoute: AboutIndexRoute,
-  UsersIndexRoute: UsersIndexRoute,
-  HelpIndexLazyRoute: HelpIndexLazyRoute,
-  UsersIdIndexRoute: UsersIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
