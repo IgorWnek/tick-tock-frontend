@@ -112,21 +112,22 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 - `src/routes/-components/Home.tsx` ✅ Updated to use SplitViewCalendar
 - `src/routes/calendar-solutions.tsx` ✅ Demo route for reference
 
-#### 2. Create Missing Routes for MVP
+#### 2. Create Missing Routes for MVP ✅ COMPLETED
 
 **Priority**: High | **Effort**: Small | **PoC Value**: High
 
-- [ ] Create `/log-entry` or `/log-today` route for time log input
-- [ ] Create `/day/$date` route for day detail view
-- [ ] Update route tree generation and navigation
-- [ ] Add proper TypeScript route typing
+- [x] Create `/log-entry` route for time log input ✅ Fully implemented with React 19 actions
+- [x] Create `/day/$date` route for day detail view ✅ Basic implementation exists with hooks
+- [x] Update route tree generation and navigation ✅ TanStack Router working properly
+- [x] Add proper TypeScript route typing ✅ Type-safe navigation implemented
 - [ ] **Testing**: Route navigation and parameter handling
 
-**Files to create**:
+**✅ COMPLETED**: Both required MVP routes implemented with proper TypeScript typing and TanStack Router integration.
 
-- `src/routes/log-entry.tsx` (or `log-today.tsx`)
-- `src/routes/day/$date.tsx`
-- Update `src/routeTree.gen.ts`
+**Files created/modified**:
+
+- `src/routes/log-entry.tsx` ✅ Complete time log input interface
+- `src/routes/day/$date.tsx` ✅ Day detail view with data fetching
 
 #### 3. "Log Today's Work" Button & Navigation ✅ COMPLETED
 
@@ -142,27 +143,126 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 **✅ COMPLETED**: Prominent "Log Today's Work" button integrated into homepage header with tooltip, hover effects, TanStack Router navigation, and accessibility features.
 
 **Files created/modified**:
+
 - `src/routes/-components/Home.tsx` ✅ CTA button integrated in header
 
-#### 4. Time Log Input Interface
+#### 4. Time Log Input Interface ✅ COMPLETED
 
 **Priority**: High | **Effort**: Medium | **PoC Value**: High
 
-- [ ] Create natural language input form with large text area
-- [ ] Implement Jira ID pattern detection and highlighting
-- [ ] Add example prompts and helper text
-- [ ] Character/word counter component
-- [ ] Form validation with React 19 form actions
-- [ ] Loading states during "parsing"
-- [ ] **MSW**: Mock message parsing API endpoint
+- [x] Create natural language input form with large text area ✅ MessageInput component implemented
+- [x] Implement Jira ID pattern detection and highlighting ✅ Real-time highlighting with regex pattern
+- [x] Add example prompts and helper text ✅ ExamplePrompts component with 4 examples
+- [x] Character/word counter component ✅ Integrated in MessageInput with limit warnings
+- [x] Form validation with React 19 form actions ✅ useActionState with comprehensive validation
+- [x] Loading states during "parsing" ✅ Proper loading UI and disabled states
+- [x] **MSW**: Mock message parsing API endpoint ✅ Realistic parsing logic with artificial delays
+- [x] **Parsed Entries Display**: Comprehensive display of parsed results with navigation ✅ ParsedEntriesDisplay component
 - [ ] **Testing**: Form validation and submission tests
+
+**✅ COMPLETED**: Full time log input interface implemented with React 19 actions, real-time Jira ID highlighting, comprehensive form validation, example prompts, and MSW mock parsing with realistic delays and confidence scoring. Enhanced with detailed parsed entries display and day view navigation.
+
+**⚠️ KNOWN ISSUE**: Date handling is inconsistent - entries created for one date but navigation goes to current date. This is addressed in Task #4.1 below.
+
+**Enhanced Implementation**:
+
+- **React 19 Actions**: useActionState for form handling with proper error states
+- **Real-time Highlighting**: Jira ID pattern detection with visual feedback
+- **Smart Parsing**: Mock NLP logic extracting task IDs, durations, and descriptions
+- **User Experience**: Loading states, validation feedback, character counting
+- **Example Prompts**: 4 realistic examples covering different use cases
+- **TypeScript Safety**: Comprehensive type definitions for all API interactions
+- **Parsed Results Display**: Detailed entry cards with status badges, duration formatting, and navigation
+
+**Files created/modified**:
+
+- `src/api/actions/timeLogs/` ✅ Complete API structure with types and mutations
+- `src/api/mocks/timeLogs.handlers.ts` ✅ Realistic parsing logic with confidence scoring
+- `src/components/log-entry/MessageInput.tsx` ✅ Main input component with highlighting
+- `src/components/log-entry/ExamplePrompts.tsx` ✅ Helper examples component
+- `src/components/log-entry/ParsedEntriesDisplay.tsx` ✅ Comprehensive results display component
+- `src/hooks/useParseMessage/` ✅ React Query integration hook
+- `src/routes/log-entry.tsx` ✅ Complete form implementation with React 19 actions
+- `src/api/mocks/handlers.ts` ✅ Updated with new endpoints
+
+#### 4.1. Date-Aware Time Logging System 🚨 HIGH PRIORITY
+
+**Priority**: Critical | **Effort**: Medium | **PoC Value**: High
+
+**Problem**: Current implementation has inconsistent date handling. Users can create entries for specific dates, but navigation and date context are broken. The log-entry route only works for "today", but users need to log time for any date via calendar interaction.
+
+**Core Issues**:
+
+- ❌ Log-entry route doesn't support date parameters (`/log-entry` vs `/log-entry?date=2025-08-08`)
+- ❌ ParsedEntriesDisplay navigation goes to current date instead of entry date
+- ❌ Calendar dates can't navigate to log-entry for that specific date
+- ❌ No way to log time for past/future dates from calendar view
+- ❌ Date context is lost during the logging workflow
+
+**Required Implementation**:
+
+- [ ] **Update log-entry route with date support**:
+  - Add optional date search parameter: `/log-entry?date=YYYY-MM-DD`
+  - Default to current date when no date provided
+  - Update page title and context to show selected date
+  - Add date picker/selector in the interface
+
+- [ ] **Fix ParsedEntriesDisplay navigation**:
+  - Use the actual entry date for "View Day" navigation
+  - Pass correct date context to day view
+  - Update success messages to show correct date context
+  - Fix date parameter handling in navigation
+
+- [ ] **Calendar integration with log-entry**:
+  - Add "Log Time" action to calendar day cells
+  - Navigate from calendar to `/log-entry?date=YYYY-MM-DD`
+  - Preserve date context throughout the workflow
+  - Add visual indicators for days with draft/logged entries
+
+- [ ] **Enhanced date handling**:
+  - Create date utilities for consistent formatting
+  - Add date validation and boundary checks
+  - Support for different date formats and timezones
+  - Proper date state management across components
+
+- [ ] **User experience improvements**:
+  - Clear date context in all interfaces
+  - Breadcrumb navigation showing current date
+  - Easy date switching without losing form data
+  - Date-aware messaging and feedback
+
+- [ ] **MSW updates**:
+  - Update mock handlers to properly handle date parameters
+  - Generate realistic data for different dates
+  - Support past and future date logging scenarios
 
 **Files to create/modify**:
 
-- `src/components/log-entry/MessageInput.tsx`
-- `src/components/log-entry/JiraIdHighlighter.tsx`
-- `src/components/log-entry/ExamplePrompts.tsx`
-- `src/api/mocks/parsing.handlers.ts`
+- `src/routes/log-entry.tsx` - Add date search parameter support
+- `src/components/log-entry/ParsedEntriesDisplay.tsx` - Fix navigation to use correct date
+- `src/components/dashboard/SplitViewCalendar.tsx` - Add "Log Time" actions to calendar
+- `src/utils/dateUtils.ts` - Create date utility functions
+- `src/components/log-entry/DateSelector.tsx` - Optional date picker component
+- `src/api/mocks/timeLogs.handlers.ts` - Update to handle date parameters correctly
+- `src/hooks/useParseMessage/` - Update to handle date context
+
+**Testing Requirements**:
+
+- [ ] Navigation from calendar to log-entry with correct date
+- [ ] ParsedEntriesDisplay navigation to correct day view
+- [ ] Date parameter handling in URLs
+- [ ] Form submission with custom dates
+- [ ] MSW mock data consistency across dates
+
+**Success Criteria**:
+
+1. ✅ User can click any calendar date and log time for that specific date
+2. ✅ ParsedEntriesDisplay navigates to the correct date's day view
+3. ✅ URL parameters properly maintain date context
+4. ✅ All date displays are consistent and accurate
+5. ✅ Works for past, current, and future dates
+
+**Dependencies**: This task blocks effective calendar integration and is critical for MVP functionality.
 
 #### 5. Draft Review Interface
 
