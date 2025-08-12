@@ -1,37 +1,43 @@
 import React from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { Calendar, Clock, ExternalLink, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, ExternalLink, CheckCircle, Ship } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ParseMessageResponse } from '@/api/actions/timeLogs/timeLogs.types';
+import { formatDuration } from '@/utils/dateUtils';
+import { useShipEntries } from '@/hooks';
 
 interface ParsedEntriesDisplayProps {
   data: ParseMessageResponse;
-  date?: string;
+  date: string; // Use string directly for consistency
 }
 
-export const ParsedEntriesDisplay: React.FC<ParsedEntriesDisplayProps> = ({
-  data,
-  date = new Date().toISOString().split('T')[0],
-}) => {
+export const ParsedEntriesDisplay: React.FC<ParsedEntriesDisplayProps> = ({ data, date }) => {
   const navigate = useNavigate();
-
-  const formatDuration = (minutes: number): string => {
-    if (minutes < 60) {
-      return `${minutes}m`;
-    }
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
-  };
+  const shipEntriesMutation = useShipEntries();
 
   const totalDuration = data.entries.reduce((sum, entry) => sum + entry.duration, 0);
 
   const handleViewDay = () => {
     navigate({ to: '/day/$date', params: { date } });
+  };
+
+  const handleShipEntries = async () => {
+    if (data.entries.length === 0) return;
+
+    try {
+      await shipEntriesMutation.mutateAsync({
+        entryIds: data.entries.map((entry) => entry.id),
+        date,
+      });
+      // After successful shipping, navigate to day view to see results
+      handleViewDay();
+    } catch {
+      // Error handling is managed by the hook
+    }
   };
 
   return (
@@ -126,12 +132,9 @@ export const ParsedEntriesDisplay: React.FC<ParsedEntriesDisplayProps> = ({
                 <Calendar className="h-4 w-4 mr-2" />
                 View Full Day
               </Button>
-              <Button variant="outline" size="sm" disabled>
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Review & Ship
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  Coming Soon
-                </Badge>
+              <Button variant="outline" size="sm" onClick={handleShipEntries} disabled={shipEntriesMutation.isPending}>
+                <Ship className="h-4 w-4 mr-2" />
+                {shipEntriesMutation.isPending ? 'Shipping...' : 'Review & Ship'}
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">

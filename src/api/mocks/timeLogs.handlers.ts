@@ -5,6 +5,8 @@ import {
   TimeEntry,
 } from 'api/actions/timeLogs/timeLogs.types';
 
+import { mockDataStore } from './mockDataStore';
+
 /**
  * Simple message parser that extracts Jira IDs and durations from natural language
  * This is a mock implementation for development - real version would use NLP/AI
@@ -14,7 +16,13 @@ class MockMessageParser {
   private static readonly durationRegex = /(\d+(?:\.\d+)?)\s*(hour|hours|hr|hrs|h|minute|minutes|min|mins|m)/gi;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static parse(message: string, _date?: string): ParseMessageResponse {
+  static parse(message: string, date?: string): ParseMessageResponse {
+    // Log date for debugging
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log('🔧 MockMessageParser: parsing message for date:', date || 'today');
+    }
+
     const jiraIds = Array.from(message.matchAll(this.jiraIdRegex)).map((match) => match[1]);
     const durations = Array.from(message.matchAll(this.durationRegex));
 
@@ -177,10 +185,27 @@ class MockMessageParser {
 
 export const timeLogsHandlers = {
   async parseMessage(message: string, date?: string): Promise<ParseMessageResponse> {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log('🔧 timeLogsHandlers.parseMessage called with date:', date);
+    }
+
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    return MockMessageParser.parse(message, date);
+    const response = MockMessageParser.parse(message, date);
+
+    // Store the parsed entries in the mock data store
+    if (response.entries.length > 0 && date) {
+      mockDataStore.addTimeEntries(date, response.entries);
+
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.log(`🔧 Stored ${response.entries.length} entries for ${date} in mockDataStore`);
+      }
+    }
+
+    return response;
   },
 
   async refineEntry(entryId: string, refinementRequest: string, originalMessage: string): Promise<RefineEntryResponse> {

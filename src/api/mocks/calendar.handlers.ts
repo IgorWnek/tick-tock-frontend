@@ -6,39 +6,9 @@ import {
   TimeLogEntry,
 } from 'api/actions/calendar/calendar.types';
 
-// Helper function to determine day status based on date
-const getDayStatus = (date: Date): { status: CalendarDayStatus; entryCount: number; totalMinutes: number } => {
-  const today = new Date();
-  const isPastDate = date < today;
-  const isToday = date.toDateString() === today.toDateString();
+import { mockDataStore, initializeMockData } from './mockDataStore';
 
-  if (isPastDate || isToday) {
-    const rand = Math.random();
-    if (rand < 0.6) {
-      return {
-        status: 'logged',
-        entryCount: Math.floor(Math.random() * 4) + 1,
-        totalMinutes: Math.floor(Math.random() * 240) + 240,
-      };
-    } else if (rand < 0.8) {
-      return {
-        status: 'draft',
-        entryCount: Math.floor(Math.random() * 3) + 1,
-        totalMinutes: Math.floor(Math.random() * 180) + 120,
-      };
-    }
-  } else if (Math.random() < 0.1) {
-    return {
-      status: 'draft',
-      entryCount: 1,
-      totalMinutes: Math.floor(Math.random() * 120) + 60,
-    };
-  }
-
-  return { status: 'no-logs', entryCount: 0, totalMinutes: 0 };
-};
-
-// Helper function to generate mock calendar data
+// Helper function to generate mock calendar data using the shared data store
 const generateCalendarData = (month: string): CalendarDayData[] => {
   const [year, monthNumber] = month.split('-').map(Number);
   const daysInMonth = new Date(year, monthNumber, 0).getDate();
@@ -50,9 +20,15 @@ const generateCalendarData = (month: string): CalendarDayData[] => {
     const dayOfWeek = date.getDay();
     const isWorkingDay = dayOfWeek >= 1 && dayOfWeek <= 5;
 
+    // Use the mock data store to get accurate status
     const { status, entryCount, totalMinutes } = isWorkingDay
-      ? getDayStatus(date)
+      ? mockDataStore.getDayStatus(dateString)
       : { status: 'no-logs' as CalendarDayStatus, entryCount: 0, totalMinutes: 0 };
+
+    if (import.meta.env.DEV && entryCount > 0) {
+      // eslint-disable-next-line no-console
+      console.log(`📅 calendar.handlers: Day ${dateString} has ${entryCount} entries with status ${status}`);
+    }
 
     days.push({
       date: dateString,
@@ -66,8 +42,20 @@ const generateCalendarData = (month: string): CalendarDayData[] => {
   return days;
 };
 
-// Helper function to generate mock time log entries for a specific day
+// Helper function to generate mock time log entries for a specific day using the shared data store
 const generateDayEntries = (date: string): TimeLogEntry[] => {
+  // First check if we have real entries from the data store
+  const realEntries = mockDataStore.getDayEntries(date);
+
+  if (realEntries.length > 0) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`📅 calendar.handlers: Found ${realEntries.length} real entries for ${date}`);
+    }
+    return realEntries;
+  }
+
+  // Fallback to mock entries for demonstration (only for working days with random data)
   const calendarData = generateCalendarData(date.substring(0, 7)); // Get month data
   const dayData = calendarData.find((day) => day.date === date);
 
@@ -75,6 +63,7 @@ const generateDayEntries = (date: string): TimeLogEntry[] => {
     return [];
   }
 
+  // Generate mock entries for demo purposes
   const entries: TimeLogEntry[] = [];
   const jiraTasks = ['XYZ-1111', 'XYZ-2222', 'ABC-3333', 'DEF-4444', 'GHI-5555'];
 
@@ -84,7 +73,7 @@ const generateDayEntries = (date: string): TimeLogEntry[] => {
     const entryDate = new Date(date);
 
     entries.push({
-      id: `entry-${date}-${i + 1}`,
+      id: `mock-entry-${date}-${i + 1}`,
       userId: 'user-123',
       date,
       jiraTaskId: taskId,
@@ -122,13 +111,33 @@ const getRandomWorkDescription = (): string => {
 
 export const calendarHandlers = {
   getCalendarData: (month: string) => {
+    // Initialize mock data on first call
+    initializeMockData();
+
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`📅 calendar.handlers.getCalendarData: Generating calendar for ${month}`);
+      // Show all dates with entries in the store
+      mockDataStore.getAllDatesWithEntries();
+    }
+
     // Add realistic delay
     return new Promise<GetCalendarDataResponse>((resolve) => {
       setTimeout(
         () => {
+          const days = generateCalendarData(month);
+
+          if (import.meta.env.DEV) {
+            const daysWithEntries = days.filter((day) => day.entryCount > 0);
+            // eslint-disable-next-line no-console
+            console.log(
+              `📅 calendar.handlers: Generated calendar for ${month}. ${daysWithEntries.length} days with entries`,
+            );
+          }
+
           resolve({
             month,
-            days: generateCalendarData(month),
+            days,
           });
         },
         300 + Math.random() * 200,
@@ -142,6 +151,13 @@ export const calendarHandlers = {
         () => {
           const entries = generateDayEntries(date);
           const totalMinutes = entries.reduce((sum, entry) => sum + entry.duration, 0);
+
+          if (import.meta.env.DEV) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `📅 calendar.handlers: Retrieved ${entries.length} entries for ${date}, total: ${totalMinutes}min`,
+            );
+          }
 
           resolve({
             date,

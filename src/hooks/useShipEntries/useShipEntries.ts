@@ -3,19 +3,19 @@ import { useQueryClient } from '@tanstack/react-query';
 import { calendarQueries } from 'api/actions/calendar';
 import { useMutation } from 'hooks/useMutation/useMutation';
 
-export const useParseMessage = () => {
+export const useShipEntries = () => {
   const queryClient = useQueryClient();
 
-  return useMutation('parseMessage', {
+  return useMutation('shipEntries', {
     meta: {
-      successMessage: 'Message parsed successfully!',
-      errorMessage: 'Failed to parse message. Please try again.',
+      successMessage: 'Entries shipped successfully!',
+      errorMessage: 'Failed to ship entries. Please try again.',
     },
     onSuccess: (data, variables) => {
       // Extract the date from the mutation variables
       const date = variables.date;
 
-      if (date && data.entries.length > 0) {
+      if (date && data.success) {
         // Extract month from date (YYYY-MM-DD -> YYYY-MM)
         const month = date.substring(0, 7);
 
@@ -36,7 +36,7 @@ export const useParseMessage = () => {
         if (import.meta.env.DEV) {
           // eslint-disable-next-line no-console
           console.log(
-            `🔄 Query invalidation: Invalidated all time-logs queries and specific calendar for ${month} and day ${date}`,
+            `🔄 Query invalidation: Invalidated all time-logs queries for ${month} and day ${date} after shipping`,
           );
         }
       }
