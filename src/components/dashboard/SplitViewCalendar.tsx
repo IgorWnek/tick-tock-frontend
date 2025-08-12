@@ -315,7 +315,7 @@ export const SplitViewCalendar: React.FC<SplitViewCalendarProps> = ({
                             </p>
                             <div className="flex gap-2">
                               <Button size="sm" className="flex items-center gap-1" asChild>
-                                <Link to="/log-entry">
+                                <Link to="/log-entry" search={{ date: selectedDateStr }}>
                                   <Plus className="h-3 w-3" />
                                   Add Log
                                 </Link>
@@ -353,7 +353,7 @@ export const SplitViewCalendar: React.FC<SplitViewCalendarProps> = ({
                                 </Link>
                               </Button>
                               <Button size="sm" variant="outline" className="flex items-center gap-1" asChild>
-                                <Link to="/log-entry">
+                                <Link to="/log-entry" search={{ date: selectedDateStr }}>
                                   <Plus className="h-3 w-3" />
                                   Add More
                                 </Link>

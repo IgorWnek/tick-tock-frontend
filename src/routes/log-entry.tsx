@@ -1,16 +1,24 @@
 import React, { useActionState, useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { Loader2, Send, Brain, ArrowLeft } from 'lucide-react';
+import { Loader2, Send, Brain, ArrowLeft, Calendar } from 'lucide-react';
+import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 import { MessageInput, ExamplePrompts, ParsedEntriesDisplay } from '@/components/log-entry';
 import { MSWDebugButton } from '@/components/debug/MSWDebugButton';
 import { useParseMessage } from '@/hooks/useParseMessage';
 import { ParseMessageResponse } from '@/api/actions/timeLogs/timeLogs.types';
+import { parseURLDateParam, getCurrentDateString, createDateContext } from '@/utils/dateUtils';
+
+const logEntrySearchSchema = z.object({
+  date: z.string().optional(),
+});
 
 export const Route = createFileRoute('/log-entry')({
+  validateSearch: logEntrySearchSchema,
   component: LogEntryPage,
 });
 
@@ -22,8 +30,21 @@ interface FormState {
 
 function LogEntryPage() {
   const navigate = useNavigate();
+  const { date: dateParam } = Route.useSearch();
   const parseMessage = useParseMessage();
   const [message, setMessage] = useState('');
+
+  // Parse and validate the date parameter
+  const targetDate = parseURLDateParam(dateParam) || getCurrentDateString();
+  const dateContext = createDateContext(targetDate);
+
+  // Helper function to get badge variant
+  const getBadgeVariant = (context: typeof dateContext) => {
+    if (!context) return 'outline';
+    if (context.isToday) return 'default';
+    if (context.isPast) return 'secondary';
+    return 'outline';
+  };
 
   // React 19 useActionState for form handling
   const [state, action, isPending] = useActionState(
@@ -47,7 +68,7 @@ function LogEntryPage() {
       try {
         const result = await parseMessage.mutateAsync({
           message: messageText,
-          date: new Date().toISOString().split('T')[0],
+          date: targetDate, // Use the selected date instead of always today
         });
 
         return { success: true, data: result };
@@ -85,8 +106,17 @@ function LogEntryPage() {
           </Button>
 
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">Log Today&apos;s Work</h1>
-            <p className="text-muted-foreground text-lg">
+            <h1 className="text-3xl font-bold text-foreground">Log Work</h1>
+            {dateContext && (
+              <div className="flex items-center justify-center gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <p className="text-muted-foreground text-lg">
+                  {dateContext.displayDate} ({dateContext.dayName})
+                </p>
+                <Badge variant={getBadgeVariant(dateContext)}>{dateContext.description}</Badge>
+              </div>
+            )}
+            <p className="text-muted-foreground">
               Describe your work in natural language and we&apos;ll convert it to structured time entries
             </p>
           </div>
@@ -161,9 +191,7 @@ function LogEntryPage() {
         </Card>
 
         {/* Parsed Entries Results */}
-        {state.success && state.data && (
-          <ParsedEntriesDisplay data={state.data} date={new Date().toISOString().split('T')[0]} />
-        )}
+        {state.success && state.data && <ParsedEntriesDisplay data={state.data} date={targetDate} />}
 
         {/* Example Prompts */}
         <ExamplePrompts onSelectExample={handleExampleSelect} />
