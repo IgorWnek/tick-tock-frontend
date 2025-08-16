@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { MessageInput, ExamplePrompts, ParsedEntriesDisplay } from '@/components/log-entry';
+import { MessageInput, ExamplePrompts, DraftReview } from '@/components/log-entry';
 import { MSWDebugButton } from '@/components/debug/MSWDebugButton';
 import { useParseMessage } from '@/hooks/useParseMessage';
 import { ParseMessageResponse } from '@/api/actions/timeLogs/timeLogs.types';
@@ -190,8 +190,14 @@ function LogEntryPage() {
           </CardContent>
         </Card>
 
-        {/* Parsed Entries Results */}
-        {state.success && state.data && <ParsedEntriesDisplay data={state.data} date={targetDate} />}
+        {/* Draft Review Interface */}
+        {state.success && state.data && (
+          <DraftReview
+            initialData={state.data}
+            date={targetDate}
+            onNavigateToDay={() => navigate({ to: '/day/$date', params: { date: targetDate } })}
+          />
+        )}
 
         {/* Example Prompts */}
         <ExamplePrompts onSelectExample={handleExampleSelect} />

@@ -25,6 +25,7 @@ export interface RefineEntryArgs {
   entryId: string;
   refinementRequest: string;
   originalMessage: string;
+  date?: string; // ISO date string for proper cache invalidation
 }
 
 export interface RefineEntryResponse {

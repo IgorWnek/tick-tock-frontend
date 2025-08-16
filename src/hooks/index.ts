@@ -5,4 +5,5 @@ export * from './useLocale/useLocale';
 export * from './useMutation/useMutation';
 export * from './useParseMessage/useParseMessage';
 export * from './useQuery/useQuery';
+export * from './useRefineEntry/useRefineEntry';
 export * from './useShipEntries/useShipEntries';

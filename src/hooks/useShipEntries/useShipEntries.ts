@@ -19,24 +19,30 @@ export const useShipEntries = () => {
         // Extract month from date (YYYY-MM-DD -> YYYY-MM)
         const month = date.substring(0, 7);
 
-        // Invalidate all calendar-related queries to ensure fresh data
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console
+          console.log(`🔄 Query invalidation: Starting cache invalidation for date ${date} and month ${month}`);
+        }
+
+        // Invalidate specific day entries query first
         queryClient.invalidateQueries({
-          queryKey: ['time-logs'],
+          queryKey: [...calendarQueries.days(), date],
         });
 
-        // Also invalidate specific queries for safety
+        // Invalidate calendar data for the month
         queryClient.invalidateQueries({
           queryKey: [...calendarQueries.calendar(), month],
         });
 
+        // Invalidate all time-logs queries for safety
         queryClient.invalidateQueries({
-          queryKey: [...calendarQueries.days(), date],
+          queryKey: ['time-logs'],
         });
 
         if (import.meta.env.DEV) {
           // eslint-disable-next-line no-console
           console.log(
-            `🔄 Query invalidation: Invalidated all time-logs queries for ${month} and day ${date} after shipping`,
+            `🔄 Query invalidation: Completed invalidation for day ${date}, month ${month}, and all time-logs queries`,
           );
         }
       }
