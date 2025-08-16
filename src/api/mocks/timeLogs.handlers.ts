@@ -208,45 +208,103 @@ export const timeLogsHandlers = {
     return response;
   },
 
-  async refineEntry(entryId: string, refinementRequest: string, originalMessage: string): Promise<RefineEntryResponse> {
+  async refineEntry(
+    entryId: string,
+    refinementRequest: string,
+    originalMessage: string,
+    date?: string,
+  ): Promise<RefineEntryResponse> {
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1200));
 
-    // For now, just re-parse the original message with slight modifications
-    // In reality, this would apply the refinement request
-    const baseResponse = MockMessageParser.parse(originalMessage);
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🔧 MSW: Refining entry ${entryId} for date ${date || 'today'} with request: "${refinementRequest}"`);
+    }
+
+    // Find the existing entry in the store to replace it
+    const targetDate = date || new Date().toISOString().split('T')[0];
+    const existingEntries = mockDataStore.getTimeEntries(targetDate);
+    const entryToRefine = existingEntries.find((entry) => entry.id === entryId);
+
+    if (!entryToRefine) {
+      throw new Error(`Entry ${entryId} not found for refinement`);
+    }
+
+    // Apply refinement: re-parse the original message with modifications based on refinement request
+    const baseResponse = MockMessageParser.parse(originalMessage, targetDate);
+
+    // Create refined entries with improved descriptions and confidence
+    const refinedEntries = baseResponse.entries.map((entry, index) => ({
+      ...entry,
+      id: `refined-${Date.now()}-${index}`, // New IDs for refined entries
+      description: `${entry.description} (refined based on: ${refinementRequest})`,
+      status: 'draft' as const,
+      createdAt: new Date().toISOString(),
+    }));
+
+    // Remove the old entry and add refined entries to the store
+    const updatedEntries = existingEntries.filter((entry) => entry.id !== entryId);
+    mockDataStore.setTimeEntries(targetDate, [...updatedEntries, ...refinedEntries]);
+
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🔧 MSW: Refined entry stored. New entries count: ${refinedEntries.length}`);
+    }
 
     return {
-      entries: baseResponse.entries.map((entry) => ({
-        ...entry,
-        id: `refined-${entry.id}`,
-        description: `${entry.description} (refined)`,
-      })),
-      confidence: Math.min(baseResponse.confidence + 10, 95),
-      suggestions: ['Refinement applied successfully'],
+      entries: refinedEntries,
+      confidence: Math.min(baseResponse.confidence + 15, 95), // Higher confidence after refinement
+      suggestions: ['Refinement applied successfully', 'Consider reviewing the updated entries before shipping'],
     };
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async shipEntries(entryIds: string[], _date: string): Promise<ShipEntriesResponse> {
+  async shipEntries(entryIds: string[], date: string): Promise<ShipEntriesResponse> {
     // Simulate Jira API call delay
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Mock successful shipping
-    const loggedEntries: TimeEntry[] = entryIds.map((id, index) => ({
-      id,
-      jiraTaskId: `SHIPPED-${index + 1}`,
-      description: `Shipped entry ${index + 1}`,
-      duration: 60,
-      status: 'logged' as const,
-      originalMessage: 'Mock shipped entry',
-      createdAt: new Date().toISOString(),
-      loggedAt: new Date().toISOString(),
-    }));
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🔧 MSW: Shipping ${entryIds.length} entries for date ${date}`, entryIds);
+    }
+
+    const loggedEntries: TimeEntry[] = [];
+    const errors: Array<{ entryId: string; error: string }> = [];
+
+    // Get existing entries for the date
+    const existingEntries = mockDataStore.getTimeEntries(date);
+
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🔧 MSW: Found ${existingEntries.length} existing entries for ${date}`, existingEntries);
+    }
+
+    // Update entries to 'logged' status
+    const updatedEntries = existingEntries.map((entry) => {
+      if (entryIds.includes(entry.id)) {
+        const loggedEntry = {
+          ...entry,
+          status: 'logged' as const,
+          loggedAt: new Date().toISOString(),
+        };
+        loggedEntries.push(loggedEntry);
+        return loggedEntry;
+      }
+      return entry;
+    });
+
+    // Store the updated entries back to mockDataStore
+    mockDataStore.setTimeEntries(date, updatedEntries);
+
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🔧 MSW: Successfully shipped ${loggedEntries.length} entries. Updated entries stored.`);
+    }
 
     return {
       success: true,
       loggedEntries,
+      errors: errors.length > 0 ? errors : undefined,
     };
   },
 };
