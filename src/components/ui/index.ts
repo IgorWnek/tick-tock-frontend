@@ -10,3 +10,5 @@ export * from './loader';
 export * from './error-boundary';
 export * from './translation';
 export * from './location-info';
+export * from './textarea';
+export * from './label';
