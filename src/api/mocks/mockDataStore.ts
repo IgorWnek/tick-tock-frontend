@@ -52,6 +52,18 @@ class MockDataStore {
   }
 
   /**
+   * Set/replace all time entries for a specific date
+   */
+  setTimeEntries(date: string, entries: TimeEntry[]): void {
+    this.timeEntries.set(date, entries);
+
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(`🗄️ MockDataStore.setTimeEntries: Set ${entries.length} entries for ${date}`);
+    }
+  }
+
+  /**
    * Get all dates that have time entries
    */
   getAllDatesWithEntries(): string[] {

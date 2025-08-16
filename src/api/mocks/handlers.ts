@@ -131,9 +131,40 @@ const parseMessageHandler = http.post<PathParams, ParseMessageArgs, ParseMessage
 const refineEntryHandler = http.post<PathParams, RefineEntryArgs, RefineEntryResponse>(
   '/api/time-logs/refine',
   async ({ request }) => {
-    const body = await request.json();
-    const response = await timeLogsHandlers.refineEntry(body.entryId, body.refinementRequest, body.originalMessage);
-    return HttpResponse.json(response, { status: 200 });
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log('🔧 MSW: refineEntry handler called');
+    }
+
+    try {
+      const body = await request.json();
+      const response = await timeLogsHandlers.refineEntry(
+        body.entryId,
+        body.refinementRequest,
+        body.originalMessage,
+        body.date,
+      );
+
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.log('🔧 MSW: refineEntry response:', response);
+      }
+
+      return HttpResponse.json(response, { status: 200 });
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.error('🔧 MSW: refineEntry error:', error);
+      }
+      return HttpResponse.json(
+        {
+          entries: [],
+          confidence: 0,
+          suggestions: ['Refinement failed. Please try again.'],
+        },
+        { status: 500 },
+      );
+    }
   },
 );
 
