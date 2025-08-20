@@ -2,3 +2,5 @@
 *.js
 *.instructions.md
 .github/prompts/**
+.github/chatmodes/**
+.github/instructions/**
