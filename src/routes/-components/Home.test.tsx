@@ -1,6 +1,5 @@
 import axiosClient from 'api/axios';
-import { LocaleContext } from 'context/locale/localeContext/LocaleContext';
-import { render, act, screen } from 'tests';
+import { render, screen } from 'tests';
 
 import { Home } from './Home';
 
@@ -8,32 +7,42 @@ const response = { status: 200, data: {} };
 vitest.spyOn(axiosClient, 'get').mockResolvedValue(response);
 
 describe('Home', () => {
-  test('renders heading', async () => {
+  test('renders dashboard heading', async () => {
     render(<Home />);
-    const element = await screen.findByText(/Home/);
+    const element = await screen.findByText(/Dashboard/);
     expect(element).toBeInTheDocument();
   });
 
-  test('changes locale when "here" button is clicked', async () => {
-    render(
-      <LocaleContext.Consumer>
-        {(value) => (
-          <>
-            <span>LOCALE: {value?.locale}</span>
-            <Home />
-          </>
-        )}
-      </LocaleContext.Consumer>,
-    );
+  test('renders welcome alert', async () => {
+    render(<Home />);
+    const welcomeTitle = await screen.findByText(/Welcome to Tick-Tock!/);
+    const welcomeDescription = await screen.findByText(/Start by clicking "Log Today's Work"/);
 
-    const initialText = (await screen.findByText(/LOCALE/)).textContent as string;
+    expect(welcomeTitle).toBeInTheDocument();
+    expect(welcomeDescription).toBeInTheDocument();
+  });
 
-    act(() => screen.getByText(/here/).click());
+  test('renders navigation buttons', async () => {
+    render(<Home />);
+    const logWorkButton = await screen.findByRole('link', { name: /Log Today's Work/ });
+    const calendarSolutionsButton = await screen.findByRole('link', { name: /Calendar Solutions/ });
 
-    expect(await screen.findByText(/LOCALE/)).not.toHaveTextContent(initialText);
+    expect(logWorkButton).toBeInTheDocument();
+    expect(calendarSolutionsButton).toBeInTheDocument();
 
-    act(() => screen.getByText(/here/).click());
+    // Verify the buttons link to the correct pages
+    expect(logWorkButton).toHaveAttribute('href', '/log-entry');
+    expect(calendarSolutionsButton).toHaveAttribute('href', '/calendar-solutions');
+  });
 
-    expect(await screen.findByText(/LOCALE/)).toHaveTextContent(initialText);
+  test('renders status overview cards', async () => {
+    render(<Home />);
+    const weekCard = await screen.findByText(/This Week/);
+    const monthCard = await screen.findByText(/This Month/);
+    const draftCard = await screen.findByText(/Draft Entries/);
+
+    expect(weekCard).toBeInTheDocument();
+    expect(monthCard).toBeInTheDocument();
+    expect(draftCard).toBeInTheDocument();
   });
 });
