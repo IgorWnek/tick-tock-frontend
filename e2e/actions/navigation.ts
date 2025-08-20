@@ -1,7 +1,7 @@
 import { Page, expect } from '@playwright/test';
 
 const navigateToHomePage = async (page: Page) => {
-  const link = page.getByRole('link', { name: 'Home' });
+  const link = page.getByRole('link', { name: 'Dashboard' });
 
   await expect(link).toHaveAttribute('href', '/');
   await link.click();
@@ -16,17 +16,8 @@ const navigateToAboutPage = async (page: Page) => {
 
   await expect(page).toHaveURL(/about/);
 };
-const navigateToHelpPage = async (page: Page) => {
-  const link = page.getByRole('link', { name: 'Help' });
-
-  await expect(link).toHaveAttribute('href', '/help');
-  await link.click();
-
-  await expect(page).toHaveURL(/help/);
-};
 
 export const navigationActions = {
   navigateToHomePage,
   navigateToAboutPage,
-  navigateToHelpPage,
 };
