@@ -51,18 +51,38 @@ export const UserProfile = ({ user, onUpdate }: UserProfileProps) => {
 
 ## File Organization Patterns
 
-### 1. Component Structure
+### 1. Atomic Design Component Structure
 
-Follow the established file organization pattern:
+Follow the atomic design methodology for component organization:
 
 ```
 src/
-├── ui/                          # Reusable UI components
-│   └── componentName/
-│       ├── ComponentName.tsx    # Main component
-│       ├── ComponentName.test.tsx
-│       └── ComponentName.types.ts
-├── routes/                      # Route-specific components
+├── components/
+│   ├── atoms/                   # Basic UI elements
+│   │   └── Button/
+│   │       ├── Button.tsx
+│   │       ├── Button.test.tsx
+│   │       ├── Button.types.ts
+│   │       └── Button.stories.tsx
+│   ├── molecules/               # Simple component combinations
+│   │   └── SearchInput/
+│   │       ├── SearchInput.tsx
+│   │       ├── SearchInput.test.tsx
+│   │       ├── SearchInput.types.ts
+│   │       └── SearchInput.stories.tsx
+│   ├── organisms/               # Complex UI sections
+│   │   └── UserCard/
+│   │       ├── UserCard.tsx
+│   │       ├── UserCard.test.tsx
+│   │       ├── UserCard.types.ts
+│   │       └── UserCard.stories.tsx
+│   ├── templates/               # Page layouts
+│   │   └── DashboardLayout/
+│   │       ├── DashboardLayout.tsx
+│   │       ├── DashboardLayout.test.tsx
+│   │       └── DashboardLayout.types.ts
+│   └── ui/                      # Legacy components (to be migrated)
+├── routes/                      # Route-specific components (pages)
 │   └── routeName/
 │       └── -components/
 │           ├── ComponentName.tsx
@@ -75,26 +95,165 @@ src/
         └── useHookName.types.ts
 ```
 
+### 2. Atomic Design Component Guidelines
+
+**Atoms** (Basic UI elements):
+- Single responsibility, minimal props
+- No business logic or data fetching
+- Focus on visual consistency and theming
+- Examples: Button, Input, Label, Icon
+
+**Molecules** (Simple combinations):
+- Combine 2-3 atoms into functional units
+- Handle basic interactions and validation
+- Minimal data dependencies
+- Examples: SearchInput, FormField, NavigationLink
+
+**Organisms** (Complex sections):
+- Combine molecules and atoms into complete sections
+- Can include data fetching and business logic
+- Manage their own state and side effects
+- Examples: UserCard, DataTable, NavigationHeader
+
+**Templates** (Page layouts):
+- Define page structure and layout
+- Manage responsive behavior
+- Handle loading and error states
+- Examples: DashboardLayout, FormLayout, ListLayout
+
+**Pages** (Route components):
+- Specific instances of templates with real data
+- Handle route-specific logic and navigation
+- Coordinate multiple organisms
+- Examples: /dashboard, /users, /settings
+
 ### 2. Naming Conventions
 
-- **Components**: PascalCase (`UserCard`, `Navigation`)
+- **Components**: PascalCase following atomic hierarchy (`Button`, `SearchInput`, `UserCard`)
 - **Hooks**: camelCase with `use` prefix (`useAuth`, `useApiClient`)
 - **Types**: PascalCase (`UserCardProps`, `AuthState`)
 - **Files**: Match the main export name
+- **Atomic Categories**: Use clear atomic design prefixes when needed for clarity
+
+### 3. Enhanced Theming and Design Tokens
+
+Leverage TailwindCSS 4 design tokens and CSS variables for consistent theming:
+
+```tsx
+// ✅ Good - Using design tokens in atoms
+export const Button = ({ variant = 'primary', size = 'md', children, ...props }: ButtonProps) => {
+  return (
+    <button
+      className={cn(
+        // Base styles using design tokens
+        'inline-flex items-center justify-center font-medium transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+
+        // Size variants using design tokens
+        {
+          'h-8 px-3 text-sm': size === 'sm',
+          'h-10 px-4': size === 'md',
+          'h-11 px-8': size === 'lg',
+        },
+
+        // Color variants using CSS variables
+        {
+          'bg-primary text-primary-foreground hover:bg-primary/90': variant === 'primary',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80': variant === 'secondary',
+          'border border-input bg-background hover:bg-accent hover:text-accent-foreground': variant === 'outline',
+        }
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+// ✅ Good - Molecule using atomic components with consistent theming
+export const SearchInput = ({ placeholder, onSearch, ...props }: SearchInputProps) => {
+  const [value, setValue] = useState('');
+
+  return (
+    <div className="flex gap-2">
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        className="flex-1"
+        {...props}
+      />
+      <Button
+        onClick={() => onSearch(value)}
+        variant="outline"
+        size="md"
+      >
+        Search
+      </Button>
+    </div>
+  );
+};
+```
+
+### 4. CSS Variables and Theme Integration
+
+Use CSS variables for dynamic theming:
+
+```css
+/* Design tokens in CSS */
+:root {
+  --color-primary: 222.2 84% 4.9%;
+  --color-primary-foreground: 210 40% 98%;
+  --color-secondary: 210 40% 96%;
+  --color-accent: 210 40% 94%;
+  --border-radius: 0.5rem;
+  --spacing-unit: 0.25rem;
+}
+
+.dark {
+  --color-primary: 210 40% 98%;
+  --color-primary-foreground: 222.2 84% 4.9%;
+  --color-secondary: 222.2 84% 4.9%;
+  --color-accent: 217.2 32.6% 17.5%;
+}
+```
+
+```tsx
+// ✅ Good - Component using CSS variables
+export const Card = ({ children, className, ...props }: CardProps) => {
+  return (
+    <div
+      className={cn(
+        'rounded-[var(--border-radius)] border bg-card text-card-foreground shadow-sm',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+```
 
 ### 3. Import/Export Patterns
 
 - Use **named exports only** (no default exports)
 - Organize imports with specific groups and spacing
+- Follow atomic design import hierarchy (atoms → molecules → organisms)
 
 ```tsx
-// ✅ Good - Organized imports
+// ✅ Good - Organized imports following atomic hierarchy
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 
 import { useMutation } from 'hooks/useMutation/useMutation';
 import { useAuth } from 'hooks/useAuth/useAuth';
-import { Translation } from '@/components/ui/translation';
+
+// Atomic design imports: atoms first, then molecules, organisms
+import { Button } from '@/components/atoms/Button';
+import { Input } from '@/components/atoms/Input';
+import { SearchInput } from '@/components/molecules/SearchInput';
+import { UserCard } from '@/components/organisms/UserCard';
 
 import { ComponentProps } from './Component.types';
 
@@ -482,27 +641,204 @@ export const UserForm = ({ user }: UserFormProps) => {
 
 ## Component Patterns
 
-### 1. Props and TypeScript
+### 1. Atomic Design Component Development
+
+Follow atomic design principles when creating components:
+
+**Atoms - Basic Building Blocks:**
+```tsx
+// ✅ Good - Atom component (Button)
+export const Button = ({
+  variant = 'primary',
+  size = 'md',
+  disabled = false,
+  children,
+  className,
+  ...props
+}: ButtonProps) => {
+  return (
+    <button
+      className={cn(
+        // Base styles using design tokens
+        'inline-flex items-center justify-center font-medium transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+        'disabled:pointer-events-none disabled:opacity-50',
+
+        // Variant styles
+        buttonVariants({ variant, size }),
+        className
+      )}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+// Supporting variant configuration
+const buttonVariants = cva('', {
+  variants: {
+    variant: {
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+      ghost: 'hover:bg-accent hover:text-accent-foreground',
+    },
+    size: {
+      sm: 'h-8 px-3 text-sm',
+      md: 'h-10 px-4',
+      lg: 'h-11 px-8',
+    },
+  },
+});
+```
+
+**Molecules - Simple Combinations:**
+```tsx
+// ✅ Good - Molecule component (FormField)
+export const FormField = ({
+  label,
+  error,
+  required = false,
+  children,
+  className,
+  ...props
+}: FormFieldProps) => {
+  const id = useId();
+
+  return (
+    <div className={cn('space-y-2', className)}>
+      <Label htmlFor={id} className={required ? 'required' : undefined}>
+        {label}
+        {required && <span className="text-destructive ml-1">*</span>}
+      </Label>
+
+      <div className="relative">
+        {React.cloneElement(children as React.ReactElement, {
+          id,
+          'aria-describedby': error ? `${id}-error` : undefined,
+          'aria-invalid': !!error,
+          ...props
+        })}
+      </div>
+
+      {error && (
+        <Text
+          id={`${id}-error`}
+          variant="error"
+          size="sm"
+          role="alert"
+        >
+          {error}
+        </Text>
+      )}
+    </div>
+  );
+};
+```
+
+**Organisms - Complex Sections:**
+```tsx
+// ✅ Good - Organism component (UserCard)
+export const UserCard = ({ user, onEdit, onDelete, className }: UserCardProps) => {
+  const { mutateAsync: deleteUser, isPending: isDeleting } = useMutation('deleteUser');
+  const { t } = useLocale();
+
+  const handleDelete = useCallback(async () => {
+    if (window.confirm(t('user.deleteConfirmation'))) {
+      await deleteUser(user.id);
+      onDelete?.(user.id);
+    }
+  }, [deleteUser, user.id, onDelete, t]);
+
+  return (
+    <Card className={cn('p-4', className)}>
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+
+          <div className="flex-1 min-w-0">
+            <Text variant="h4" className="truncate">{user.name}</Text>
+            <Text variant="muted" size="sm">{user.email}</Text>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <div className="space-y-2">
+          <Text size="sm">
+            <span className="font-medium">{t('user.role')}:</span> {user.role}
+          </Text>
+          <Text size="sm">
+            <span className="font-medium">{t('user.lastActive')}:</span> {formatDate(user.lastActiveAt)}
+          </Text>
+        </div>
+      </CardContent>
+
+      <CardFooter className="pt-3">
+        <div className="flex gap-2 ml-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onEdit?.(user)}
+          >
+            {t('common.edit')}
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? t('common.deleting') : t('common.delete')}
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
+```
+
+### 2. Props and TypeScript
 
 - Define props interfaces in separate `.types.ts` files
-- Use explicit prop destructuring
-- Handle optional props properly
+- Use explicit prop destructuring with proper defaults
+- Handle optional props with sensible defaults
+- Use variant-based prop patterns for flexible component APIs
 
 ```tsx
 // In Component.types.ts
+export type ButtonProps = {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  children: React.ReactNode;
+  className?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
 export type UserCardProps = {
   user: User;
-  onSelect: (userId: string) => void;
-  variant?: 'default' | 'compact';
+  onEdit?: (user: User) => void;
+  onDelete?: (userId: string) => void;
   className?: string;
 };
 
-// In Component.tsx
-export const UserCard = ({ user, onSelect, variant = 'default', className }: UserCardProps) => {
+// In Component.tsx - Use proper defaults and destructuring
+export const UserCard = ({
+  user,
+  onEdit,
+  onDelete,
+  className
+}: UserCardProps) => {
   return (
-    <div className={clsx('user-card', `user-card--${variant}`, className)}>
+    <div className={clsx('user-card', className)}>
       <h3>{user.name}</h3>
-      <button onClick={() => onSelect(user.id)}>Select User</button>
+      <button onClick={() => onEdit?.(user)}>Edit</button>
+      <button onClick={() => onDelete?.(user.id)}>Delete</button>
     </div>
   );
 };
@@ -512,9 +848,11 @@ export const UserCard = ({ user, onSelect, variant = 'default', className }: Use
 
 - Use proper event handler typing
 - Implement accessibility features
+- Follow atomic design patterns for event delegation
 
 ```tsx
-export const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
+// ✅ Good - Atom with proper event handling
+export const SearchInput = ({ onSearch, onClear, placeholder }: SearchInputProps) => {
   const [value, setValue] = useState('');
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -529,18 +867,50 @@ export const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
     [onSearch, value],
   );
 
+  const handleClear = useCallback(() => {
+    setValue('');
+    onClear?.();
+  }, [onClear]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Escape') {
+        handleClear();
+      }
+    },
+    [handleClear],
+  );
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="search-input">Search Users</label>
-      <input
-        id="search-input"
-        type="text"
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-        aria-label="Search users by name"
-      />
-      <button type="submit">Search</button>
+    <form onSubmit={handleSubmit} className="flex gap-2">
+      <div className="relative flex-1">
+        <Input
+          id="search-input"
+          type="text"
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          aria-label="Search input"
+          className="pr-10"
+        />
+        {value && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleClear}
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <Button type="submit" variant="outline">
+        <Search className="h-4 w-4 mr-2" />
+        Search
+      </Button>
     </form>
   );
 };
@@ -568,17 +938,34 @@ export const FeatureErrorBoundary = ({ children }: FeatureErrorBoundaryProps) =>
 
 ## Custom Hooks Patterns
 
-### 1. Hook Composition
+### 1. Hook Composition with Atomic Design
 
 - Keep hooks focused and composable
 - Return objects with clear naming
 - Handle loading and error states
+- Consider atomic design principles for hook organization
 
 ```tsx
-export const useUserData = (userId: string) => {
-  const { data: user, isLoading: isUserLoading, isError: isUserError } = useQuery(userQueries.getById(userId));
+// ✅ Good - Atomic hook for basic data fetching
+export const useUser = (userId: string) => {
+  const { data: user, isLoading, isError, error } = useQuery(userQueries.getById(userId));
 
-  const { data: permissions, isLoading: isPermissionsLoading } = useQuery(userQueries.getPermissions(userId), {
+  return {
+    user,
+    isLoading,
+    isError,
+    error,
+  };
+};
+
+// ✅ Good - Molecular hook combining multiple atomic hooks
+export const useUserWithPermissions = (userId: string) => {
+  const { user, isLoading: isUserLoading, isError: isUserError } = useUser(userId);
+
+  const {
+    data: permissions,
+    isLoading: isPermissionsLoading
+  } = useQuery(userQueries.getPermissions(userId), {
     enabled: !!user,
   });
 
@@ -587,22 +974,63 @@ export const useUserData = (userId: string) => {
     permissions,
     isLoading: isUserLoading || isPermissionsLoading,
     isError: isUserError,
+    hasPermission: useCallback(
+      (permission: string) => permissions?.includes(permission) ?? false,
+      [permissions]
+    ),
+  };
+};
+
+// ✅ Good - Organism-level hook for complex business logic
+export const useUserManagement = () => {
+  const { data: users, isLoading } = useQuery(userQueries.getAll());
+
+  const { mutateAsync: createUser, isPending: isCreating } = useMutation('createUser');
+  const { mutateAsync: updateUser, isPending: isUpdating } = useMutation('updateUser');
+  const { mutateAsync: deleteUser, isPending: isDeleting } = useMutation('deleteUser');
+
+  const createUserWithValidation = useCallback(
+    async (userData: CreateUserData) => {
+      // Business logic validation
+      if (!userData.email?.includes('@')) {
+        throw new Error('Invalid email format');
+      }
+
+      return createUser(userData);
+    },
+    [createUser]
+  );
+
+  return {
+    users,
+    isLoading,
+    actions: {
+      createUser: createUserWithValidation,
+      updateUser,
+      deleteUser,
+    },
+    states: {
+      isCreating,
+      isUpdating,
+      isDeleting,
+      isBusy: isCreating || isUpdating || isDeleting,
+    },
   };
 };
 ```
 
 ### 2. Custom Hook Testing
 
-Write comprehensive tests for custom hooks:
+Write comprehensive tests for custom hooks with atomic design considerations:
 
 ```tsx
-// useUserData.test.tsx
-describe('useUserData', () => {
+// useUser.test.tsx - Testing atomic hook
+describe('useUser', () => {
   test('returns user data when loaded', async () => {
-    const mockUser = { id: '1', name: 'John Doe' };
+    const mockUser = { id: '1', name: 'John Doe', email: 'john@example.com' };
     mockApiResponse(mockUser, 'get');
 
-    const { result } = renderHook(() => useUserData('1'), {
+    const { result } = renderHook(() => useUser('1'), {
       wrapper: ({ children }) => (
         <AppProviders>
           <>{children}</>
@@ -615,41 +1043,206 @@ describe('useUserData', () => {
       expect(result.current.isLoading).toBe(false);
     });
   });
+
+  test('handles error states correctly', async () => {
+    mockApiError(new Error('User not found'), 'get');
+
+    const { result } = renderHook(() => useUser('1'), {
+      wrapper: ({ children }) => (
+        <AppProviders>
+          <>{children}</>
+        </AppProviders>
+      ),
+    });
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.user).toBeUndefined();
+    });
+  });
+});
+
+// useUserManagement.test.tsx - Testing organism-level hook
+describe('useUserManagement', () => {
+  test('creates user with validation', async () => {
+    const { result } = renderHook(() => useUserManagement(), {
+      wrapper: ({ children }) => (
+        <AppProviders>
+          <>{children}</>
+        </AppProviders>
+      ),
+    });
+
+    const validUser = { name: 'John Doe', email: 'john@example.com' };
+
+    await act(async () => {
+      await result.current.actions.createUser(validUser);
+    });
+
+    expect(mockCreateUser).toHaveBeenCalledWith(validUser);
+  });
+
+  test('validates email format before creation', async () => {
+    const { result } = renderHook(() => useUserManagement(), {
+      wrapper: ({ children }) => (
+        <AppProviders>
+          <>{children}</>
+        </AppProviders>
+      ),
+    });
+
+    const invalidUser = { name: 'John Doe', email: 'invalid-email' };
+
+    await expect(async () => {
+      await act(async () => {
+        await result.current.actions.createUser(invalidUser);
+      });
+    }).rejects.toThrow('Invalid email format');
+  });
 });
 ```
 
 ## Testing Patterns
 
-### 1. Component Testing
+### 1. Component Testing with Atomic Design
 
-Follow Testing Library best practices:
+Follow Testing Library best practices while considering atomic design hierarchy:
 
 ```tsx
-// Component.test.tsx
+// Button.test.tsx - Testing atom component
+describe('Button', () => {
+  test('renders with correct variant styles', () => {
+    render(<Button variant="primary">Click me</Button>);
+
+    const button = screen.getByRole('button', { name: /click me/i });
+    expect(button).toHaveClass('bg-primary', 'text-primary-foreground');
+  });
+
+  test('handles disabled state correctly', () => {
+    render(<Button disabled>Disabled</Button>);
+
+    const button = screen.getByRole('button', { name: /disabled/i });
+    expect(button).toBeDisabled();
+    expect(button).toHaveClass('disabled:pointer-events-none', 'disabled:opacity-50');
+  });
+
+  test('supports different sizes', () => {
+    const { rerender } = render(<Button size="sm">Small</Button>);
+    expect(screen.getByRole('button')).toHaveClass('h-8', 'px-3', 'text-sm');
+
+    rerender(<Button size="lg">Large</Button>);
+    expect(screen.getByRole('button')).toHaveClass('h-11', 'px-8');
+  });
+});
+
+// SearchInput.test.tsx - Testing molecule component
+describe('SearchInput', () => {
+  test('combines atoms correctly and handles interactions', async () => {
+    const mockOnSearch = vi.fn();
+    const mockOnClear = vi.fn();
+
+    render(
+      <SearchInput
+        onSearch={mockOnSearch}
+        onClear={mockOnClear}
+        placeholder="Search users..."
+      />
+    );
+
+    const input = screen.getByLabelText(/search input/i);
+    const submitButton = screen.getByRole('button', { name: /search/i });
+
+    // Test input functionality
+    await userEvent.type(input, 'john doe');
+    expect(input).toHaveValue('john doe');
+
+    // Test search submission
+    await userEvent.click(submitButton);
+    expect(mockOnSearch).toHaveBeenCalledWith('john doe');
+
+    // Test clear functionality
+    const clearButton = screen.getByLabelText(/clear search/i);
+    await userEvent.click(clearButton);
+    expect(input).toHaveValue('');
+    expect(mockOnClear).toHaveBeenCalled();
+  });
+
+  test('supports keyboard shortcuts', async () => {
+    const mockOnClear = vi.fn();
+
+    render(<SearchInput onSearch={vi.fn()} onClear={mockOnClear} />);
+
+    const input = screen.getByLabelText(/search input/i);
+    await userEvent.type(input, 'test query');
+    await userEvent.keyboard('{Escape}');
+
+    expect(input).toHaveValue('');
+    expect(mockOnClear).toHaveBeenCalled();
+  });
+});
+
+// UserCard.test.tsx - Testing organism component
 describe('UserCard', () => {
   const mockUser = {
     id: '1',
     name: 'John Doe',
     email: 'john@example.com',
+    role: 'Admin',
+    avatar: 'https://example.com/avatar.jpg',
+    lastActiveAt: '2025-08-20T10:00:00Z',
   };
 
   test('renders user information correctly', () => {
-    const handleSelect = vi.fn();
-
-    render(<UserCard user={mockUser} onSelect={handleSelect} />);
+    render(<UserCard user={mockUser} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /select user/i })).toBeInTheDocument();
+    expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Admin')).toBeInTheDocument();
+
+    const avatar = screen.getByRole('img', { name: /john doe/i });
+    expect(avatar).toHaveAttribute('src', mockUser.avatar);
   });
 
-  test('calls onSelect when button is clicked', async () => {
-    const handleSelect = vi.fn();
+  test('handles edit action correctly', async () => {
+    const mockOnEdit = vi.fn();
 
-    render(<UserCard user={mockUser} onSelect={handleSelect} />);
+    render(<UserCard user={mockUser} onEdit={mockOnEdit} />);
 
-    await userEvent.click(screen.getByRole('button', { name: /select user/i }));
+    await userEvent.click(screen.getByRole('button', { name: /edit/i }));
+    expect(mockOnEdit).toHaveBeenCalledWith(mockUser);
+  });
 
-    expect(handleSelect).toHaveBeenCalledWith('1');
+  test('handles delete with confirmation', async () => {
+    const mockOnDelete = vi.fn();
+
+    // Mock window.confirm
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
+
+    render(<UserCard user={mockUser} onDelete={mockOnDelete} />);
+
+    await userEvent.click(screen.getByRole('button', { name: /delete/i }));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockOnDelete).toHaveBeenCalledWith(mockUser.id);
+    });
+
+    confirmSpy.mockRestore();
+  });
+
+  test('cancels delete when confirmation is denied', async () => {
+    const mockOnDelete = vi.fn();
+
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
+
+    render(<UserCard user={mockUser} onDelete={mockOnDelete} />);
+
+    await userEvent.click(screen.getByRole('button', { name: /delete/i }));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    expect(mockOnDelete).not.toHaveBeenCalled();
+
+    confirmSpy.mockRestore();
   });
 });
 ```
@@ -836,6 +1429,22 @@ const handleClick = async () => {
     setIsPending(false);
   }
 };
+
+// ❌ Bad - Not following atomic design hierarchy
+import { ComplexUserManagementTable } from '@/components/atoms/ComplexUserManagementTable';
+
+// ❌ Bad - Mixing atomic levels inappropriately
+const Button = () => (
+  <button>
+    <UserCard user={user} /> {/* Organism inside atom */}
+  </button>
+);
+
+// ❌ Bad - Not using design tokens
+<button className="bg-blue-500 text-white px-4 py-2 rounded-md" />
+
+// ❌ Bad - Hardcoded theme values
+<div style={{ backgroundColor: '#3b82f6', color: '#ffffff' }} />
 ```
 
 ### ✅ Do these instead:
@@ -850,7 +1459,7 @@ export const Component = () => {};
 // ✅ Good - Proper typing
 const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
 
-// ✅ Good - CSS classes
+// ✅ Good - CSS classes with design tokens
 <div className="flex justify-between">
 
 // ✅ Good - Error boundaries
@@ -884,18 +1493,40 @@ const handleClick = () => {
     await updateData();
   });
 };
+
+// ✅ Good - Follow atomic design hierarchy
+import { Button } from '@/components/atoms/Button';
+import { SearchInput } from '@/components/molecules/SearchInput';
+import { UserCard } from '@/components/organisms/UserCard';
+
+// ✅ Good - Proper atomic composition
+const SearchForm = () => (
+  <form className="space-y-4">
+    <SearchInput onSearch={handleSearch} />
+    <Button type="submit">Search</Button>
+  </form>
+);
+
+// ✅ Good - Using design tokens
+<Button variant="primary" size="md" />
+
+// ✅ Good - CSS variables for theming
+<div className="bg-primary text-primary-foreground" />
 ```
 
 ## Summary
 
 Always prioritize:
 
-1. **Type Safety** - Comprehensive TypeScript usage
-2. **Component Composition** - Small, focused, reusable components
-3. **Testing** - Comprehensive test coverage with Testing Library
-4. **Accessibility** - WCAG compliant interfaces
-5. **Performance** - Proper memoization and code splitting
-6. **Code Organization** - Consistent file structure and naming
-7. **Error Handling** - Robust error boundaries and loading states
+1. **Atomic Design Methodology** - Organize components by complexity and responsibility (atoms → molecules → organisms → templates → pages)
+2. **Type Safety** - Comprehensive TypeScript usage with explicit prop types and interfaces
+3. **Design System Consistency** - Use design tokens, CSS variables, and consistent theming patterns
+4. **Component Composition** - Build complex UIs from simple, focused, reusable components
+5. **Testing** - Comprehensive test coverage with Testing Library, considering atomic design hierarchy
+6. **Accessibility** - WCAG compliant interfaces with proper semantic HTML and ARIA attributes
+7. **Performance** - Proper memoization, code splitting, and optimized rendering
+8. **Code Organization** - Consistent file structure following atomic design principles
+9. **Error Handling** - Robust error boundaries and loading states at all component levels
+10. **React 19 Features** - Leverage Actions, useOptimistic, enhanced useTransition, and direct ref props
 
-Follow these patterns to maintain consistency with the existing codebase and React 19 best practices.
+Follow these patterns to maintain consistency with the existing codebase, atomic design principles, and React 19 best practices while building a scalable and maintainable component library.

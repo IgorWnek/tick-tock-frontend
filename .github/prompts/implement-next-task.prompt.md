@@ -12,7 +12,7 @@ current project state and implement the next logical task from the development r
 ## Context Files
 
 - [MVP Specification](../../mvp.md) - Core product requirements and user flows
-- [Frontend Tasks](../../frontend-tasks.md) - Comprehensive task breakdown with priorities
+- [Frontend Tasks](../../docs/tasks/frontend-development-tasks.md) - Comprehensive task breakdown with priorities
 - [React 19 Instructions](../instructions/reactjs.instructions.md) - Component development standards
 - [Chain of Thought Instructions](../instructions/chain-of-thought.instructions.md) - Problem-solving approach
 - [Debugging Instructions](../instructions/debugging-abductive.instructions.md) - Systematic debugging methodology
@@ -76,7 +76,7 @@ Use available tools to:
 
 ### Step 2: Task Identification
 
-From `frontend-tasks.md`, select the next task by:
+From `docs/tasks/frontend-development-tasks.md`, select the next task by:
 
 - Filtering completed vs. incomplete tasks
 - Evaluating priority and PoC value
