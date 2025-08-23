@@ -8,6 +8,8 @@ description: "TanStack Query best practices for server state management, caching
 ## Context
 TanStack Query serves as our client-side server state management and caching layer. It's crucial that our implementation works identically with MSW (development) and real APIs (production). TanStack Query acts as a sophisticated data store that automatically handles caching, synchronization, and invalidation.
 
+Naming note: Throughout this document, “TanStack Query” refers to the React bindings `@tanstack/react-query` (previously called “React Query”). Use “TanStack Query” consistently in code comments and docs.
+
 This guide incorporates **atomic design principles** to ensure data fetching patterns align with our component architecture, where atoms focus on display, molecules handle simple data, organisms manage complex business logic, and templates coordinate multiple data sources.
 
 ## Core Principles
@@ -272,7 +274,8 @@ export const UserManagementPage = () => {
     isError
   } = useQuery({
     ...userQueries.getPaginated({ page, search }),
-    keepPreviousData: true, // Smooth pagination
+    // v5: prefer structural sharing (default) or placeholderData to keep prior page visible
+    placeholderData: (prev) => prev,
   });
 
   const { data: userStats } = useQuery(userQueries.getStats());
@@ -770,14 +773,14 @@ export const calendarQueries = {
     queryKey: ['time-logs', 'calendar', month],
     queryFn: () => fetchCalendarData(month),
     staleTime: 5 * 60 * 1000,  // 5 minutes (changes infrequently)
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+  gcTime: 10 * 60 * 1000, // 10 minutes (v5 name; was cacheTime)
   }),
 
   dayEntries: (date: string) => ({
     queryKey: ['time-logs', 'day', date],
     queryFn: () => fetchDayEntries(date),
     staleTime: 1 * 60 * 1000,  // 1 minute (changes more frequently)
-    cacheTime: 5 * 60 * 1000,  // 5 minutes
+  gcTime: 5 * 60 * 1000,  // 5 minutes (v5 name; was cacheTime)
   }),
 };
 ```
@@ -807,6 +810,45 @@ onSuccess: (data, variables) => {
     });
   }
 },
+```
+
+### v5 pagination patterns (smooth UX)
+Use placeholderData to retain the previous page while the new page loads, or rely on structural sharing when staleTime makes the transition seamless.
+
+```ts
+// Hook: usePaginatedUsers.ts
+export const usePaginatedUsers = (page: number, search: string) =>
+  useQuery({
+    ...userQueries.getPaginated({ page, search }),
+    placeholderData: (prev) => prev, // keeps prior page visible during refetch
+    staleTime: 30_000,
+  });
+```
+
+Minimal test sketch:
+
+```ts
+import { renderHook, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+test('pagination keeps previous page visible', async () => {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+  );
+
+  const { result, rerender } = renderHook(
+    ({ page }) => usePaginatedUsers(page, ''),
+    { wrapper, initialProps: { page: 1 } }
+  );
+
+  await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
+  const first = result.current.data;
+
+  rerender({ page: 2 });
+  // While page 2 loads, placeholderData returns previous data
+  expect(result.current.data).toBe(first);
+});
 ```
 
 ## Anti-Patterns to Avoid
