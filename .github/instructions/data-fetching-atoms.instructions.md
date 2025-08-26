@@ -8,7 +8,7 @@ description: "Strict no-fetching rules for atoms and molecules (Atomic Design). 
 Scope this file to the smallest UI building blocks. Atoms never fetch data. Molecules also never fetch data and never perform mutations. Both are presentational and may use only local UI state. All remote data and mutations belong to organisms/templates/pages or dedicated feature hooks/containers.
 
 References:
-- See `tanstack-query.instructions.md` for data architecture, caching, invalidation, and where to place queries/mutations (organisms+).
+- See `data-architecture.instructions.md` for data architecture, caching, and invalidation patterns.
 - See `atomic-design.instructions.md` for responsibilities by atomic level (this file strictly enforces molecules without data fetching).
 - See `code-quality.instructions.md` for import rules and TypeScript conventions.
 - See `testing.instructions.md` for testing patterns with MSW and Testing Library.

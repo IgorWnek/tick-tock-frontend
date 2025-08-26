@@ -10,7 +10,7 @@ Use these guidelines when leveraging React 19 advanced capabilities. Keep TypeSc
 References:
 - Code quality: `./eslint.instructions.md`
 - Formatting: `./prettier.instructions.md`
-- Data layer: `./tanstack-query.instructions.md`
+- Data layer: `./data-architecture.instructions.md`
 - Core React: `./react-core.instructions.md`
 - Atomic Design: `./atomic-design.instructions.md`
 

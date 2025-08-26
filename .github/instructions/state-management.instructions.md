@@ -8,7 +8,7 @@ description: 'Context patterns, state management, and data flow guidelines align
 Use these rules to design local and app-level state. Prefer React primitives (`useState`, `useReducer`, Context) for local/client state and TanStack Query for server state. Keep responsibilities clear per Atomic Design level.
 
 References:
-- Data layer (server state): `./tanstack-query.instructions.md`
+- Data layer (server state): `./data-architecture.instructions.md`
 - React fundamentals: `./react-core.instructions.md`
 - React 19 features: `./react19-features.instructions.md`
 - Code quality: `./eslint.instructions.md`
