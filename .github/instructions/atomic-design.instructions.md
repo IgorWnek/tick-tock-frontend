@@ -221,8 +221,7 @@ export default function Button() {}
 ```
 
 ## Integration
-- Data fetching per level: see `./tanstack-query.instructions.md`.
-  - Atoms: none. Molecules: none (accept data via props). Organisms/Pages: allowed via hooks with proper states.
+- Data fetching per level: see `./data-fetching-atoms.instructions.md` (atoms/molecules: no fetching) and `./data-fetching-organisms.instructions.md` (organisms/pages orchestration). For factories, see `./data-architecture.instructions.md`.
 - React fundamentals: see `./react-core.instructions.md`.
 - Design tokens and theming: see `./design-system.instructions.md` and migration guide `docs/tasks/atomic-design-migration-tasks.md`.
 - Testing patterns: see `./testing.instructions.md`.

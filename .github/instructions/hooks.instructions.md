@@ -10,7 +10,7 @@ Use these rules for writing custom hooks in this repo. Avoid repeating fundament
 References:
 - Core React: `./react-core.instructions.md`
 - React 19 Advanced: `./react19-features.instructions.md`
-- Data layer: `./tanstack-query.instructions.md`
+- Data architecture: `./data-architecture.instructions.md`
 - Code quality: `./eslint.instructions.md`
 - Formatting: `./prettier.instructions.md`
 - Atomic Design: `./atomic-design.instructions.md`
@@ -95,7 +95,7 @@ export const useSearchParams = ({ query, minLength = 2, delay = 250 }: UseSearch
 ```
 
 ### Organism-level hook — data fetching (TanStack Query abstraction)
-Use our query abstraction (see `tanstack-query.instructions.md`). Keep keys stable, type the result, and expose typical status fields.
+Use our query abstraction (see `data-architecture.instructions.md`). Keep keys stable, type the result, and expose typical status fields.
 
 ```ts
 // Pseudocode: adapt imports to our abstraction (e.g., hooks/useQuery)
@@ -106,7 +106,7 @@ type User = { id: string; name: string };
 export const useUser = (userId: string) => {
   return useQuery<User>({
     // Prefer query factories for consistent cache keys
-    // See tanstack-query.instructions.md → Query Factories Pattern
+  // See data-architecture.instructions.md → Query Factories Pattern
     queryKey: userQueries.detail(userId),
     queryFn: async () => {
       // fetch via API client abstraction
@@ -263,7 +263,7 @@ useSomething(); // but never expose error/loading states or throw in effects
 ```
 
 ## Integration
-- For data hooks: follow `./tanstack-query.instructions.md` for keys, factories, and invalidation.
+- For data hooks: follow `./data-architecture.instructions.md` for keys, factories, and invalidation.
 - For UI hooks: follow `./atomic-design.instructions.md` to keep them within atoms/molecules.
 - Use `./eslint.instructions.md` for hooks rules; do not disable exhaustive-deps unless justified.
 - Keep examples formatted per `./prettier.instructions.md`.

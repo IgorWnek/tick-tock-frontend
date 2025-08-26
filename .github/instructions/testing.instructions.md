@@ -10,7 +10,7 @@ Use these guidelines when writing tests. They align with our Atomic Design struc
 References:
 - Dev workflow and commands: `./development.instructions.md`
 - Code quality rules (testing-specific rules included): `./eslint.instructions.md`
-- Data layer (queries/mutations and test patterns): `./tanstack-query.instructions.md`
+- Data layer (queries/mutations and test patterns): `./data-architecture.instructions.md`
 - Atomic Design levels and responsibilities: `./atomic-design.instructions.md`
 
 Tooling used (see `package.json`):
@@ -232,7 +232,7 @@ Notes:
 - Use `waitFor` to assert cache-driven updates. For optimistic updates, assert provisional UI first, then the reconciled state.
 - When testing invalidation, inspect `queryClient` directly if you provide it, or assert user-visible effects after invalidation.
 
-Example (pagination placeholderData): see `./tanstack-query.instructions.md` for a working snippet and test sketch.
+Example (pagination placeholderData): see `./data-architecture.instructions.md` for a working snippet and test sketch.
 
 ## Patterns to avoid
 

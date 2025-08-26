@@ -18,7 +18,7 @@ This guidance targets React 19 + TypeScript + TanStack Query v5 and is tailored 
 Related:
 - `atomic-design.instructions.md` for responsibilities by level
 - `data-fetching-atoms.instructions.md` for strict atoms/molecules rules
-- `tanstack-query.instructions.md` for global query/mutation architecture
+- `data-architecture.instructions.md` for global query/mutation architecture
 - `performance.instructions.md` for render/code-splitting tips
 - `testing.instructions.md` for Testing Library + MSW patterns
 
@@ -252,6 +252,6 @@ Organisms and pages are responsible for server-state orchestration using TanStac
 
 - See `./atomic-design.instructions.md` for component responsibilities by level.
 - See `./data-fetching-atoms.instructions.md` for strict no-fetching rules at atoms/molecules.
-- See `./tanstack-query.instructions.md` for global data architecture, factories, and caches.
+- See `./data-architecture.instructions.md` for global data architecture, factories, and caches.
 - See `./performance.instructions.md` for render/code-splitting/perf settings.
 - See `./testing.instructions.md` for Testing Library + MSW patterns.

@@ -216,7 +216,7 @@ items.map((it, i) => <li key={i}>{it.name}</li>);
 ```
 
 ## Integration
-- Data fetching and caching: see `./tanstack-query.instructions.md`.
+- Data layer architecture: see `./data-architecture.instructions.md`.
 - Atomic component structure: see `./atomic-design.instructions.md`.
 - Advanced React 19 features: see `./react19-features.instructions.md`.
 - Hooks authoring patterns: see `./hooks.instructions.md`.

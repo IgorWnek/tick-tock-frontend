@@ -9,7 +9,7 @@ These guidelines focus on rendering performance, shipping less JS, and measuring
 
 Keep in mind:
 - Atomic Design: Atoms are pure and cheap to render; push data work up to molecules/organisms; perform orchestration at templates/pages.
-- TanStack Query is the source of truth for server state. Avoid duplicating server data in local state. See `tanstack-query.instructions.md`.
+- TanStack Query is the source of truth for server state. Avoid duplicating server data in local state. See `data-architecture.instructions.md`.
 - Measure first. Optimize only what you can prove is slow. Use the tools in `development.instructions.md`.
 
 ## Core principles
@@ -201,5 +201,5 @@ Sentry (optional):
 ## References
 
 - See `development.instructions.md` for running build analysis and dev tooling.
-- See `tanstack-query.instructions.md` for caching, invalidation, pagination, and data selection performance.
+- See `data-architecture.instructions.md` for caching, invalidation, pagination, and data selection performance.
 - See `atomic-design.instructions.md` for responsibilities by component level.
