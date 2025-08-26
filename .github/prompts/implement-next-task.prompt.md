@@ -13,9 +13,10 @@ current project state and implement the next logical task from the development r
 
 - [MVP Specification](../../mvp.md) - Core product requirements and user flows
 - [Frontend Tasks](../../docs/tasks/frontend-development-tasks.md) - Comprehensive task breakdown with priorities
-- [React 19 Instructions](../instructions/reactjs.instructions.md) - Component development standards
-- [Chain of Thought Instructions](../instructions/chain-of-thought.instructions.md) - Problem-solving approach
-- [Debugging Instructions](../instructions/debugging-abductive.instructions.md) - Systematic debugging methodology
+- [React Core Instructions](../instructions/react-core.instructions.md) - Core React 19 + TypeScript fundamentals
+- [Atomic Design Instructions](../instructions/atomic-design.instructions.md) - Component organization and hierarchy
+- [Testing Instructions](../instructions/testing.instructions.md) - Testing strategy and helpers
+- [Code Quality Instructions](../instructions/code-quality.instructions.md) - ESLint/Prettier and conventions
 
 ## Your Mission
 
