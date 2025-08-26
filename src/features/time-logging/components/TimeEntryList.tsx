@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Typography } from '@/design-system/atoms/Typography/Typography';
 import { TimeEntry } from '@/api/actions/timeLogs/timeLogs.types';
-import { TimeEntryCard as LegacyTimeEntryCard } from '@/components/log-entry/TimeEntryCard';
+import { TimeEntryCard } from '@/design-system/organisms/TimeEntryCard/TimeEntryCard';
 
 export interface TimeEntryListProps {
   entries: TimeEntry[];
@@ -30,7 +30,7 @@ export const TimeEntryList = ({ entries, title, className }: TimeEntryListProps)
       )}
       <div className="space-y-3">
         {entries.map((entry, index) => (
-          <LegacyTimeEntryCard key={entry.id} entry={entry} index={index} />
+          <TimeEntryCard key={entry.id} entry={entry} index={index} />
         ))}
       </div>
     </div>
