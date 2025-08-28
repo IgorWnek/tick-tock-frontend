@@ -437,7 +437,9 @@ All tasks use MSW (Mock Service Worker) for API mocking during development.
 
 **Files created/modified**:
 
-- `.github/instructions/tanstack-query.instructions.md` ✅ Comprehensive guide
+- `.github/instructions/data-architecture.instructions.md` ✅ Data architecture and query factories
+- `.github/instructions/data-fetching-atoms.instructions.md` ✅ Atoms/Molecules no-fetching rules
+- `.github/instructions/data-fetching-organisms.instructions.md` ✅ Complex fetching for organisms/templates/pages
 - `src/hooks/useParseMessage/useParseMessage.ts` ✅ Enhanced with cache invalidation
 - `src/hooks/useShipEntries/useShipEntries.ts` ✅ Created with cache management
 - `src/api/mocks/mockDataStore.ts` ✅ Shared persistent mock storage
