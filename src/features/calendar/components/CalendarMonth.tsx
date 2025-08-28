@@ -36,13 +36,6 @@ export const CalendarMonth = ({ onDayClick, className }: CalendarMonthProps) => 
     today: 'ring-2 ring-primary ring-offset-2 animate-pulse',
   };
 
-  const handlePreviousMonth = useCallback(() => {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
-  }, []);
-  const handleNextMonth = useCallback(() => {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
-  }, []);
-
   const handleDaySelect = useCallback(
     (dates: Date[] | undefined) => {
       if (dates && dates.length > 0 && onDayClick) {
@@ -58,11 +51,10 @@ export const CalendarMonth = ({ onDayClick, className }: CalendarMonthProps) => 
       isLoading={isLoading}
       error={error ? 'Error loading calendar data.' : null}
       onMonthChange={setCurrentDate}
-      onPreviousMonth={handlePreviousMonth}
-      onNextMonth={handleNextMonth}
       modifiers={modifiers}
       modifiersClassNames={modifiersClassNames}
       onDaySelect={handleDaySelect}
+      captionLayout="dropdown"
       legendItems={[
         { colorClass: 'bg-orange-500', label: 'No logs' },
         { colorClass: 'bg-blue-500', label: 'Draft logs' },

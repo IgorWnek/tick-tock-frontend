@@ -1,8 +1,9 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
+
+import { EnhancedDayButton } from './DayButton';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Icon } from '@/design-system/atoms/Icon/Icon';
 import { Typography } from '@/design-system/atoms/Typography/Typography';
@@ -18,11 +19,10 @@ export interface CalendarGridProps {
   isLoading?: boolean;
   error?: string | null;
   onMonthChange?: (date: Date) => void;
-  onPreviousMonth?: () => void;
-  onNextMonth?: () => void;
   modifiers?: Record<string, Date[]>;
   modifiersClassNames?: Record<string, string>;
   onDaySelect?: (dates: Date[] | undefined) => void;
+  captionLayout?: 'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years';
   title?: string;
   description?: string;
   legendItems?: CalendarGridLegendItem[];
@@ -34,82 +34,67 @@ export const CalendarGrid = ({
   isLoading,
   error,
   onMonthChange,
-  onPreviousMonth,
-  onNextMonth,
   modifiers,
   modifiersClassNames,
   onDaySelect,
+  captionLayout = 'label',
   title = 'Time Log Calendar',
   description = 'Track your daily time logging progress across the month',
   legendItems,
   className,
 }: CalendarGridProps) => {
   return (
-    <Card className={cn('transition-shadow duration-300 hover:shadow-lg', className)}>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Icon icon={CalendarIcon} size="sm" aria-hidden />
-              {title}
-            </CardTitle>
-            {description && (
-              <Typography variant="small" color="muted" className="mt-1">
-                {description}
-              </Typography>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={onPreviousMonth}
-              aria-label="Previous month"
-              disabled={isLoading}
-              className="h-8 w-8"
-            >
-              <ChevronLeft className="h-4 w-4" aria-hidden />
-            </Button>
-            <Typography as="span" variant="small" className="min-w-[120px] text-center font-medium">
-              {month.toLocaleString(undefined, { month: 'long', year: 'numeric' })}
+    <Card className={cn('transition-shadow duration-300 hover:shadow-lg h-full flex flex-col', className)}>
+      <CardHeader className="pb-4">
+        <div>
+          <CardTitle className="flex items-center gap-2">
+            <Icon icon={CalendarIcon} size="sm" aria-hidden />
+            {title}
+          </CardTitle>
+          {description && (
+            <Typography variant="small" color="muted" className="mt-1">
+              {description}
             </Typography>
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={onNextMonth}
-              aria-label="Next month"
-              disabled={isLoading}
-              className="h-8 w-8"
-            >
-              <ChevronRight className="h-4 w-4" aria-hidden />
-            </Button>
-          </div>
+          )}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 flex flex-col">
         {error && (
-          <div className="flex h-64 items-center justify-center text-destructive">
+          <div className="flex flex-1 items-center justify-center text-destructive">
             <Typography variant="body">{error}</Typography>
           </div>
         )}
         {!error && isLoading && (
-          <div className="flex h-64 items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <Typography variant="body" color="muted">
               Loading calendar...
             </Typography>
           </div>
         )}
         {!error && !isLoading && (
-          <div className="space-y-4">
+          <div className="space-y-4 flex-1 flex flex-col">
             <Calendar
               month={month}
               onMonthChange={onMonthChange}
               modifiers={modifiers}
               modifiersClassNames={modifiersClassNames}
               showOutsideDays={false}
-              className="rounded-md border"
+              className="rounded-md border flex-1 p-4"
+              classNames={{
+                months: 'w-full h-full flex flex-col',
+                month: 'w-full space-y-4 flex-1 flex flex-col',
+                table: 'w-full border-collapse flex-1',
+                weekdays: 'flex w-full',
+                weekday: 'text-muted-foreground rounded-md flex-1 font-normal text-sm select-none text-center pb-3',
+                week: 'flex w-full mt-3',
+                day: 'relative p-1 text-center flex-1 aspect-square select-none', // Enhanced spacing and sizing
+                nav: 'hidden', // Hide internal navigation since SplitViewCalendar has its own
+              }}
+              components={{
+                DayButton: EnhancedDayButton,
+              }}
+              mode="multiple"
+              captionLayout={captionLayout}
               onSelect={onDaySelect}
             />
             {legendItems && legendItems.length > 0 && (
