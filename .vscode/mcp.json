@@ -32,6 +32,12 @@
       "env": {
         "GITHUB_API_KEY": "${input:github-api-key}"
       }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
     }
   }
 }
