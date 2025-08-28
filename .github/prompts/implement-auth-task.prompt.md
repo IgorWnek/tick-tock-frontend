@@ -29,7 +29,8 @@ Your systematic approach:
 2. **Sequential Execution**: Implement sub-tasks ONE AT A TIME in the exact order listed
 3. **Requirements Compliance**: Satisfy ALL requirements, design requirements, and definitions of done
 4. **Quality Validation**: Verify every checklist item before proceeding
-5. **Progress Tracking**: Update status and identify next sub-task
+5. **User Feedback**: Wait for user approval after each sub-task completion
+6. **Progress Tracking**: Update status and identify next sub-task (only after user approval)
 
 ## Critical Implementation Rules
 
@@ -121,22 +122,41 @@ src/design-system/atoms/ComponentName/
 
 **MANDATORY CHECKS** (before proceeding to next sub-task):
 1. **TypeScript compilation** passes without errors
-2. **All Definition of Done items** are checked ✅
-3. **All Design Definition of Done items** are verified ✅
-4. **Requirements section** is completely satisfied
-5. **Component imports** work from new locations
-6. **Tests pass** and cover all specified scenarios
-7. **Accessibility features** are implemented and functional
-8. **File structure** matches atomic design principles exactly
+2. **Run test suite** with `npm run test` to ensure all tests pass
+3. **All Definition of Done items** are checked ✅
+4. **All Design Definition of Done items** are verified ✅
+5. **Requirements section** is completely satisfied
+6. **Component imports** work from new locations
+7. **Tests pass** and cover all specified scenarios
+8. **Accessibility features** are implemented and functional
+9. **File structure** matches atomic design principles exactly
 
-### Step 5: Progress Tracking and Next Steps
+### Step 5: User Feedback and Approval
 
-**Status Documentation**:
+**MANDATORY PAUSE** after validation:
+1. **Present implementation results** to user for review
+2. **Wait for explicit user feedback** before proceeding
+3. **Do NOT automatically continue** to the next sub-task
+4. **Provide clear review guidance** for what user should verify
+
+**User Review Areas**:
+- **Functionality**: Test implemented features work as expected
+- **Code Quality**: Review generated code for correctness and standards
+- **File Structure**: Verify atomic design structure is correct
+- **TypeScript**: Confirm compilation passes and types are proper
+- **Tests**: Run tests and verify coverage is adequate
+- **Integration**: Check imports and component integration work
+
+### Step 6: Proceed to Next Sub-task
+
+**Only after user approval**:
 1. **Mark completed items** with ✅ in Definition of Done
 2. **Document what was implemented** with specific details
 3. **Identify the next sub-task** to be implemented
 4. **Note any dependencies** for future sub-tasks
 5. **Verify overall progress** toward main task success criteria
+
+**Wait for user to request next sub-task implementation**
 
 ## Implementation Quality Standards
 
@@ -210,10 +230,28 @@ For each sub-task implementation, provide:
 - [✅] Brand consistency verified
 ```
 
-### 5. Progress Status
+### 5. User Review Checklist
+```
+**Please Review and Verify**:
+- [ ] Functionality works as expected
+- [ ] Code quality meets project standards
+- [ ] File structure follows atomic design
+- [ ] TypeScript compilation passes
+- [ ] Tests run successfully
+- [ ] Component integration works
+- [ ] Accessibility features function properly
+
+**User Feedback Required**:
+Please confirm:
+- "✅ Approved - proceed to next sub-task" OR
+- "❌ Changes needed - [specific feedback]"
+```
+
+### 6. Next Steps (After User Approval)
 ```
 **Completed**: [What was implemented]
-**Next Sub-task**: [Next sub-task to implement]
+**User Status**: [Waiting for approval / Approved / Changes requested]
+**Next Sub-task**: [Next sub-task to implement - only show after approval]
 **Overall Progress**: [X of Y sub-tasks completed for main task]
 **Success Criteria Status**: [Progress toward main task success criteria]
 ```
@@ -245,6 +283,7 @@ For each sub-task implementation, provide:
 4. Component must be importable from correct location
 5. Accessibility requirements must be verified
 6. Design requirements must be visually confirmed
+7. **USER APPROVAL must be obtained before proceeding**
 
 ### 🚨 Common Pitfalls to Avoid
 
@@ -254,6 +293,7 @@ For each sub-task implementation, provide:
 - **Missing accessibility**: ARIA labels and keyboard support are mandatory
 - **Inadequate testing**: Cover all scenarios specified in Definition of Done
 - **Design token neglect**: Must integrate with design system variables
+- **Auto-proceeding**: NEVER continue to next sub-task without user approval
 
 ## Ready to Execute
 
@@ -262,14 +302,20 @@ For each sub-task implementation, provide:
 1. **Specify the main task** you want to implement (copy the exact heading from authentication-system-tasks.md)
 2. **Let the agent analyze** the task structure and requirements
 3. **Review the implementation plan** before execution begins
-4. **Verify each sub-task completion** against all requirements
-5. **Proceed sequentially** through all sub-tasks until main task success criteria are met
+4. **Agent implements ONE sub-task** and waits for your approval
+5. **Review and test** the implemented sub-task thoroughly
+6. **Provide feedback**: "✅ Approved - proceed to next sub-task" or request changes
+7. **Repeat** until all sub-tasks are completed and main task success criteria are met
+
+**Feedback Loop**:
+- Agent implements sub-task → **PAUSES** → Waits for user review → User approves → Agent continues to next sub-task
+- **Important**: Agent will NOT automatically proceed without explicit user approval
 
 **Example Usage**:
 ```
 Please implement: ### 1. Design System Foundation Setup
 
-Ensure all sub-tasks are completed sequentially with full requirements compliance.
+Start with the first sub-task and wait for my approval before proceeding.
 ```
 
-The agent will systematically work through each sub-task, ensuring complete adherence to all requirements, design standards, and success criteria before moving to the next step.
+The agent will systematically work through each sub-task, ensuring complete adherence to all requirements, design standards, and success criteria. **After each sub-task completion, the agent will pause and wait for your explicit approval before proceeding to the next sub-task.**
