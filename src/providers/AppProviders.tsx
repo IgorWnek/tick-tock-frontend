@@ -4,10 +4,14 @@ import { ApiClientContextController } from '../context/apiClient/apiClientContex
 
 import { AppProvidersProps } from './AppProviders.types';
 
+import { ThemeProvider } from '@/design-system/providers/ThemeProvider';
+
 export const AppProviders = ({ children }: AppProvidersProps) => (
-  <LocaleContextController>
-    <ApiClientContextController>
-      <AuthContextController>{children}</AuthContextController>
-    </ApiClientContextController>
-  </LocaleContextController>
+  <ThemeProvider>
+    <LocaleContextController>
+      <ApiClientContextController>
+        <AuthContextController>{children}</AuthContextController>
+      </ApiClientContextController>
+    </LocaleContextController>
+  </ThemeProvider>
 );

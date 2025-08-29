@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { SplitViewCalendar } from '@/components/dashboard';
+import { SplitViewCalendar } from '@/design-system/organisms/SplitViewCalendar';
 
 export const Home = () => {
   return (
