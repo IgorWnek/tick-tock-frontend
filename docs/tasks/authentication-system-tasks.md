@@ -266,7 +266,7 @@ Create a new Avatar atom component for user representation. This is appropriatel
 
 **🎯 Success Criteria:**
 
-- [ ] MSW mocks support all authentication scenarios
+- [x] MSW mocks support all authentication scenarios
 
 #### 2.1 Update MSW Mocks for Enhanced User Data
 
@@ -350,16 +350,16 @@ const authorizeHandler = http.post<LoginMutationArguments, never, LoginMutationR
 
 **Definition of Done**:
 
-- [ ] testUsers array exists with at least 2 test accounts
-- [ ] `/authorize` endpoint validates credentials against testUsers
-- [ ] Invalid credentials return 401 with proper error message
-- [ ] Valid credentials return 200 with tokens
-- [ ] `/me` endpoint includes email field in response
-- [ ] `PATCH /me` endpoint exists and updates user profile
-- [ ] `PATCH /me/password` endpoint exists and validates current password
-- [ ] All endpoints return consistent error response format
-- [ ] Changes persist within the MSW session
-- [ ] No breaking changes to existing auth flow
+- [x] testUsers array exists with at least 2 test accounts
+- [x] `/authorize` endpoint validates credentials against testUsers
+- [x] Invalid credentials return 401 with proper error message
+- [x] Valid credentials return 200 with tokens
+- [x] `/me` endpoint includes email field in response
+- [x] `PATCH /me` endpoint exists and updates user profile
+- [x] `PATCH /me/password` endpoint exists and validates current password
+- [x] All endpoints return consistent error response format
+- [x] Changes persist within the MSW session
+- [x] No breaking changes to existing auth flow
 
 #### 2.2 Extend Auth Types
 
@@ -436,16 +436,16 @@ export type AuthErrorResponse = {
 
 **Definition of Done**:
 
-- [ ] `GetMeQueryResponse` includes id and email fields
-- [ ] `UpdateProfileMutationArguments` supports partial updates
-- [ ] `UpdatePasswordMutationArguments` includes confirmation field
-- [ ] Response types exist for all profile operations
-- [ ] Error types handle validation and auth failures
-- [ ] All types are exported from auth.types.ts
-- [ ] TypeScript compilation passes without errors
-- [ ] Types integrate with existing TanStack Query patterns
-- [ ] JSDoc comments document each type's purpose
-- [ ] No breaking changes to existing type consumers
+- [x] `GetMeQueryResponse` includes id and email fields
+- [x] `UpdateProfileMutationArguments` supports partial updates
+- [x] `UpdatePasswordMutationArguments` includes confirmation field
+- [x] Response types exist for all profile operations
+- [x] Error types handle validation and auth failures
+- [x] All types are exported from auth.types.ts
+- [x] TypeScript compilation passes without errors
+- [x] Types integrate with existing TanStack Query patterns
+- [x] JSDoc comments document each type's purpose
+- [x] No breaking changes to existing type consumers
 
 #### 2.3 Create Profile API Actions
 
@@ -464,6 +464,19 @@ Create API actions for profile management.
 - `updatePasswordMutation` for password changes
 - Integrate with existing TanStack Query patterns
 - Include proper error handling and validation
+
+**Definition of Done**:
+
+- [x] Profile mutations file created with updateProfile and updatePassword functions
+- [x] Profile queries file created with appropriate query structure
+- [x] Mutations integrate with existing TanStack Query patterns
+- [x] Functions use proper TypeScript types from auth.types.ts
+- [x] Profile mutations exported in central mutations index
+- [x] Error handling follows existing patterns
+- [x] TypeScript compilation passes without errors
+- [x] Functions accessible via useMutation hook
+- [x] JSDoc comments document function purposes
+- [x] Integration follows existing authentication architecture
 
 ### 3. Molecule Components
 
