@@ -10,8 +10,8 @@
  */
 
 // FormField molecule exports
-// export { FormField } from './FormField';
-// export type { FormFieldProps } from './FormField/FormField.types';
+export { FormField } from './FormField';
+export type { FormFieldProps } from './FormField/FormField.types';
 
 // DropdownMenu molecule exports
 // export { DropdownMenu } from './DropdownMenu';
