@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { Label } from './Label';
 
@@ -27,6 +28,7 @@ describe('Label', () => {
   });
 
   it('supports clicking to focus associated input', async () => {
+    const user = userEvent.setup();
     render(
       <div>
         <Label htmlFor="clickable-input">Click me</Label>
@@ -37,7 +39,7 @@ describe('Label', () => {
     const label = screen.getByText(/click me/i);
     const input = screen.getByRole('textbox');
 
-    label.click();
+    await user.click(label);
     expect(input).toHaveFocus();
   });
 
@@ -91,8 +93,7 @@ describe('Label', () => {
   it('supports gap spacing for icons', () => {
     render(
       <Label>
-        <span>🔒</span>
-        Password
+        <span>🔒</span> Password
       </Label>,
     );
 
