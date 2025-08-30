@@ -600,27 +600,27 @@ Create a reusable form field molecule that composes Label and Input atoms with e
 
 **Design Definition of Done**:
 
-- [ ] Vertical spacing follows design system tokens (space-y-2)
-- [ ] Label typography matches design system standards
-- [ ] Required asterisk is clearly visible and properly styled
-- [ ] Error states use consistent destructive color tokens
-- [ ] Focus states provide clear visual feedback
-- [ ] Responsive layout works on all screen sizes
-- [ ] Visual hierarchy guides user attention properly
+- [x] Vertical spacing follows design system tokens (space-y-2)
+- [x] Label typography matches design system standards
+- [x] Required asterisk is clearly visible and properly styled
+- [x] Error states use consistent destructive color tokens
+- [x] Focus states provide clear visual feedback
+- [x] Responsive layout works on all screen sizes
+- [x] Visual hierarchy guides user attention properly
 
 **Definition of Done**:
 
-- [ ] FormField component exists with all 4 required files
-- [ ] Component composes Label and Input atoms correctly
-- [ ] Supports all specified input types
-- [ ] Error states display with proper accessibility attributes
-- [ ] Required fields show visual indicator (asterisk)
-- [ ] Integrates with React Hook Form Controller
-- [ ] Can be imported from `@/design-system/molecules/FormField`
-- [ ] TypeScript compilation passes
-- [ ] Unit tests cover error states, required fields, and accessibility
-- [ ] Component follows design system spacing and colors
-- [ ] Supports both controlled and uncontrolled usage
+- [x] FormField component exists with all 4 required files
+- [x] Component composes Label and Input atoms correctly
+- [x] Supports all specified input types
+- [x] Error states display with proper accessibility attributes
+- [x] Required fields show visual indicator (asterisk)
+- [x] Integrates with React Hook Form Controller
+- [x] Can be imported from `@/design-system/molecules/FormField`
+- [x] TypeScript compilation passes
+- [x] Unit tests cover error states, required fields, and accessibility
+- [x] Component follows design system spacing and colors
+- [x] Supports both controlled and uncontrolled usage
 
 #### 3.2 Create DropdownMenu Molecule
 
