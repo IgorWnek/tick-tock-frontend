@@ -55,7 +55,7 @@
       }
     },
     {
-      "files": ["src/components/ui/**/*.tsx"],
+      "files": ["src/components/ui/**/*.tsx", "src/design-system/**/*.tsx"],
       "rules": {
         "react/jsx-props-no-spreading": "off",
         "react/display-name": "off",

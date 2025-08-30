@@ -17,8 +17,8 @@ This document outlines the tasks for implementing a comprehensive authentication
 
 **🎯 Success Criteria:**
 
-- [ ] All components follow atomic design principles
-- [ ] Design system directory structure is established
+- [x] All components follow atomic design principles
+- [x] Design system directory structure is established
 
 #### 1.1 Create Design System Directory Structure
 
@@ -57,12 +57,12 @@ Create the complete atomic design directory structure with initial files and exp
 
 **Definition of Done**:
 
-- [ ] All directories exist as specified above
-- [ ] All index.ts files exist with proper TypeScript exports (initially empty)
-- [ ] `src/design-system/tokens/index.ts` contains basic design token structure
-- [ ] Root `src/design-system/index.ts` re-exports all component categories
-- [ ] No TypeScript compilation errors
-- [ ] Directory structure matches atomic design principles exactly
+- [x] All directories exist as specified above
+- [x] All index.ts files exist with proper TypeScript exports (initially empty)
+- [x] `src/design-system/tokens/index.ts` contains basic design token structure
+- [x] Root `src/design-system/index.ts` re-exports all component categories
+- [x] No TypeScript compilation errors
+- [x] Directory structure matches atomic design principles exactly
 
 #### 1.2 Migrate Essential UI Components to Atoms
 
@@ -111,15 +111,15 @@ Migrate existing shadcn/ui components from `src/components/ui/` to the new atomi
 
 **Definition of Done**:
 
-- [ ] All 3 components (Button, Input, Label) exist in new atomic structure
-- [ ] Each component has all 4 required files (.tsx, .types.ts, .test.tsx, index.ts)
-- [ ] All existing props and variants work identically to original components
-- [ ] Components can be imported from `@/design-system/atoms/ComponentName`
-- [ ] All components use named exports only
-- [ ] TypeScript compilation passes without errors
-- [ ] All existing tests pass (or equivalent new tests)
-- [ ] Components integrate with design tokens system
-- [ ] Storybook stories work (if they existed for original components)
+- [x] All 3 components (Button, Input, Label) exist in new atomic structure
+- [x] Each component has all 4 required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] All existing props and variants work identically to original components
+- [x] Components can be imported from `@/design-system/atoms/ComponentName`
+- [x] All components use named exports only
+- [x] TypeScript compilation passes without errors
+- [x] All existing tests pass (or equivalent new tests)
+- [x] Components integrate with design tokens system
+- [x] Storybook stories work (if they existed for original components)
 
 **Example Button structure**:
 
@@ -251,22 +251,22 @@ Create a new Avatar atom component for user representation. This is appropriatel
 
 **Definition of Done**:
 
-- [ ] Avatar component exists with all 4 required files
-- [ ] Component displays initials correctly from firstName/lastName props
-- [ ] All 3 size variants (sm, md, lg) work and use design tokens
-- [ ] Proper accessibility: ARIA labels, alt text for images
-- [ ] Handles edge cases: missing names, single names, empty props
-- [ ] Can be imported from `@/design-system/atoms/Avatar`
-- [ ] TypeScript compilation passes
-- [ ] Unit tests cover all scenarios: with names, without names, different sizes
-- [ ] Component integrates with existing design system colors
-- [ ] Circular shape maintains aspect ratio across all sizes
+- [x] Avatar component exists with all 4 required files
+- [x] Component displays initials correctly from firstName/lastName props
+- [x] All 3 size variants (sm, md, lg) work and use design tokens
+- [x] Proper accessibility: ARIA labels, alt text for images
+- [x] Handles edge cases: missing names, single names, empty props
+- [x] Can be imported from `@/design-system/atoms/Avatar`
+- [x] TypeScript compilation passes
+- [x] Unit tests cover all scenarios: with names, without names, different sizes
+- [x] Component integrates with existing design system colors
+- [x] Circular shape maintains aspect ratio across all sizes
 
 ### 2. Authentication API Layer Updates
 
 **🎯 Success Criteria:**
 
-- [ ] MSW mocks support all authentication scenarios
+- [x] MSW mocks support all authentication scenarios
 
 #### 2.1 Update MSW Mocks for Enhanced User Data
 
@@ -350,16 +350,16 @@ const authorizeHandler = http.post<LoginMutationArguments, never, LoginMutationR
 
 **Definition of Done**:
 
-- [ ] testUsers array exists with at least 2 test accounts
-- [ ] `/authorize` endpoint validates credentials against testUsers
-- [ ] Invalid credentials return 401 with proper error message
-- [ ] Valid credentials return 200 with tokens
-- [ ] `/me` endpoint includes email field in response
-- [ ] `PATCH /me` endpoint exists and updates user profile
-- [ ] `PATCH /me/password` endpoint exists and validates current password
-- [ ] All endpoints return consistent error response format
-- [ ] Changes persist within the MSW session
-- [ ] No breaking changes to existing auth flow
+- [x] testUsers array exists with at least 2 test accounts
+- [x] `/authorize` endpoint validates credentials against testUsers
+- [x] Invalid credentials return 401 with proper error message
+- [x] Valid credentials return 200 with tokens
+- [x] `/me` endpoint includes email field in response
+- [x] `PATCH /me` endpoint exists and updates user profile
+- [x] `PATCH /me/password` endpoint exists and validates current password
+- [x] All endpoints return consistent error response format
+- [x] Changes persist within the MSW session
+- [x] No breaking changes to existing auth flow
 
 #### 2.2 Extend Auth Types
 
@@ -436,16 +436,16 @@ export type AuthErrorResponse = {
 
 **Definition of Done**:
 
-- [ ] `GetMeQueryResponse` includes id and email fields
-- [ ] `UpdateProfileMutationArguments` supports partial updates
-- [ ] `UpdatePasswordMutationArguments` includes confirmation field
-- [ ] Response types exist for all profile operations
-- [ ] Error types handle validation and auth failures
-- [ ] All types are exported from auth.types.ts
-- [ ] TypeScript compilation passes without errors
-- [ ] Types integrate with existing TanStack Query patterns
-- [ ] JSDoc comments document each type's purpose
-- [ ] No breaking changes to existing type consumers
+- [x] `GetMeQueryResponse` includes id and email fields
+- [x] `UpdateProfileMutationArguments` supports partial updates
+- [x] `UpdatePasswordMutationArguments` includes confirmation field
+- [x] Response types exist for all profile operations
+- [x] Error types handle validation and auth failures
+- [x] All types are exported from auth.types.ts
+- [x] TypeScript compilation passes without errors
+- [x] Types integrate with existing TanStack Query patterns
+- [x] JSDoc comments document each type's purpose
+- [x] No breaking changes to existing type consumers
 
 #### 2.3 Create Profile API Actions
 
@@ -464,6 +464,19 @@ Create API actions for profile management.
 - `updatePasswordMutation` for password changes
 - Integrate with existing TanStack Query patterns
 - Include proper error handling and validation
+
+**Definition of Done**:
+
+- [x] Profile mutations file created with updateProfile and updatePassword functions
+- [x] Profile queries file created with appropriate query structure
+- [x] Mutations integrate with existing TanStack Query patterns
+- [x] Functions use proper TypeScript types from auth.types.ts
+- [x] Profile mutations exported in central mutations index
+- [x] Error handling follows existing patterns
+- [x] TypeScript compilation passes without errors
+- [x] Functions accessible via useMutation hook
+- [x] JSDoc comments document function purposes
+- [x] Integration follows existing authentication architecture
 
 ### 3. Molecule Components
 
@@ -587,27 +600,27 @@ Create a reusable form field molecule that composes Label and Input atoms with e
 
 **Design Definition of Done**:
 
-- [ ] Vertical spacing follows design system tokens (space-y-2)
-- [ ] Label typography matches design system standards
-- [ ] Required asterisk is clearly visible and properly styled
-- [ ] Error states use consistent destructive color tokens
-- [ ] Focus states provide clear visual feedback
-- [ ] Responsive layout works on all screen sizes
-- [ ] Visual hierarchy guides user attention properly
+- [x] Vertical spacing follows design system tokens (space-y-2)
+- [x] Label typography matches design system standards
+- [x] Required asterisk is clearly visible and properly styled
+- [x] Error states use consistent destructive color tokens
+- [x] Focus states provide clear visual feedback
+- [x] Responsive layout works on all screen sizes
+- [x] Visual hierarchy guides user attention properly
 
 **Definition of Done**:
 
-- [ ] FormField component exists with all 4 required files
-- [ ] Component composes Label and Input atoms correctly
-- [ ] Supports all specified input types
-- [ ] Error states display with proper accessibility attributes
-- [ ] Required fields show visual indicator (asterisk)
-- [ ] Integrates with React Hook Form Controller
-- [ ] Can be imported from `@/design-system/molecules/FormField`
-- [ ] TypeScript compilation passes
-- [ ] Unit tests cover error states, required fields, and accessibility
-- [ ] Component follows design system spacing and colors
-- [ ] Supports both controlled and uncontrolled usage
+- [x] FormField component exists with all 4 required files
+- [x] Component composes Label and Input atoms correctly
+- [x] Supports all specified input types
+- [x] Error states display with proper accessibility attributes
+- [x] Required fields show visual indicator (asterisk)
+- [x] Integrates with React Hook Form Controller
+- [x] Can be imported from `@/design-system/molecules/FormField`
+- [x] TypeScript compilation passes
+- [x] Unit tests cover error states, required fields, and accessibility
+- [x] Component follows design system spacing and colors
+- [x] Supports both controlled and uncontrolled usage
 
 #### 3.2 Create DropdownMenu Molecule
 
