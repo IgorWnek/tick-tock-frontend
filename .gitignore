@@ -33,3 +33,4 @@ stats.html
 
 # MCP Servers
 .mcp/memory.json
+.playwright-mcp
