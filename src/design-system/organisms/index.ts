@@ -10,8 +10,8 @@
  */
 
 // LoginForm organism exports
-// export { LoginForm } from './LoginForm';
-// export type { LoginFormProps } from './LoginForm/LoginForm.types';
+export { LoginForm } from './LoginForm';
+export type { LoginFormProps } from './LoginForm/LoginForm.types';
 
 // UserMenu organism exports
 // export { UserMenu } from './UserMenu';
