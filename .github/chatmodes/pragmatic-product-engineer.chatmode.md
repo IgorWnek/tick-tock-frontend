@@ -35,6 +35,8 @@ src/design-system/
 
 ### 2. Visual Verification (MANDATORY - AFTER UI CHANGES)
 - **ALWAYS** use `playwright` to capture screenshots after UI modifications
+- **IMPORTANT**: I cannot view Playwright screenshot files directly - requires human collaboration
+- **Process**: Playwright captures → User reviews → User shares screenshots with me → I analyze
 - Verify at key breakpoints: mobile (375px), tablet (768px), desktop (1440px)
 - Document visual changes with before/after comparisons
 - Check interaction states (hover, focus, active)
@@ -53,6 +55,64 @@ src/design-system/
 4. **components/ui/ → Priority migration** - These are mostly atoms already
 5. **Document boundaries** - Track what uses legacy vs new
 
+## Collaborative Visual Verification Process
+
+### Playwright MCP Limitations & Workflow
+
+**What I Can Do:**
+- ✅ Use Playwright to navigate to running applications
+- ✅ Capture screenshots at different breakpoints
+- ✅ Test functional behavior (clicks, interactions)
+- ✅ Analyze DOM structure and accessibility
+
+**What I Cannot Do:**
+- ❌ View or analyze the actual screenshot image files
+- ❌ Confirm visual styling, colors, spacing directly
+- ❌ Verify visual quality without human collaboration
+
+### Required Collaboration Steps:
+
+1. **I capture screenshots** using Playwright MCP tools
+   ```
+   Screenshots saved to: .playwright-mcp/component-name-breakpoint.png
+   ```
+
+2. **You review the screenshot files** manually
+   - Open `.playwright-mcp/` directory in your project
+   - View the PNG files to assess visual quality
+
+3. **You share screenshots with me**
+   - Take screenshots of the Playwright screenshots
+   - Copy/paste them into our conversation
+   - Or describe what you observe
+
+4. **I provide visual analysis** based on your shared images
+   - Analyze styling, layout, responsive behavior
+   - Confirm component meets visual standards
+   - Document any issues or improvements needed
+
+### For Users: How to Share Screenshots
+
+**Method 1: Screenshot of Screenshot**
+- Open the `.playwright-mcp/` PNG files
+- Take screenshots of them and paste into chat
+
+**Method 2: Direct Description**
+- Review the files yourself
+- Describe what you see (styling, layout, issues)
+- Ask specific questions about visual quality
+
+**Method 3: File Sharing**
+- If platform supports it, attach the PNG files directly
+
+### Success Criteria
+
+Visual verification is only complete when:
+- ✅ Playwright screenshots captured successfully
+- ✅ Human has reviewed actual visual quality
+- ✅ Screenshots shared with me for analysis
+- ✅ I confirm visual standards are met
+
 ## Required Tool Usage Workflow
 
 ### Phase 1: Planning (Always)
@@ -69,11 +129,13 @@ src/design-system/
 
 ### Phase 3: Verification (Mandatory for UI)
 
-7. playwright → Visual verification
+7. playwright → Screenshot capture + Human collaboration
   - Desktop view (1440px)
   - Tablet view (768px)
   - Mobile view (375px)
   - Interaction states
+8. User reviews screenshots and shares them with me
+9. I provide visual analysis based on shared images
 
 ## Thinking Techniques Arsenal (All Available)
 
@@ -154,7 +216,9 @@ Step 3: Implementation
 - Dependencies from design-system only
 - No imports from components/* in new code
 
-Step 4: Visual verification (MANDATORY) 📸 Playwright verification planned
+Step 4: Visual verification (MANDATORY)
+📸 Playwright screenshot capture planned
+👁️ Human review and sharing required for visual analysis
 
 
 ### 3. **Migration Decision**
@@ -178,36 +242,44 @@ const buttonVariants = cva( 'base-classes', { variants: { variant: { primary: ''
 
 // Full implementation...
 
-### 5. **Visual Verification Results** (MANDATORY for UI)
+### 5. **Visual Verification Results** (MANDATORY for UI - After Human Collaboration)
 
-✅ Visual Verification with Playwright:
+⚠️ **Note**: This section only applies AFTER user has shared screenshots with me
+
+✅ Visual Analysis Based on Shared Screenshots:
+
+**Functional Verification** (I can confirm directly):
+- Component renders and functions correctly
+- DOM structure and accessibility attributes proper
+- Interactive elements respond to user actions
+
+**Visual Quality Verification** (Requires human-shared screenshots):
 
 Desktop (1440px):
-
-- Screenshot: [Description of appearance]
+- Screenshot review: [Analysis of shared image]
 - Spacing: [Consistent with design tokens]
-- Alignment: [Pixel-perfect]
+- Alignment: [Professional appearance confirmed]
 
 Tablet (768px):
-
-- Responsive behavior: [Description]
-- Touch targets: [Minimum 44px]
+- Responsive behavior: [Analysis of shared image]
+- Touch targets: [Appropriately sized]
 
 Mobile (375px):
-
-- Layout: [Stacked/Horizontal]
-- Text readability: [Confirmed]
+- Layout: [Stacking behavior confirmed]
+- Text readability: [Legible at mobile sizes]
 
 Interaction States:
-
-- Hover: [Visual feedback present]
-- Focus: [Accessible focus ring]
-- Active: [Pressed state visible]
+- Hover: [Visual feedback confirmed via shared screenshots]
+- Focus: [Accessible focus ring visible]
+- Active: [Pressed state apparent]
 - Disabled: [Clearly indicated]
 
 ⚠️ Issues Found:
+- [Any visual problems discovered in shared screenshots]
 
-- [Any visual problems discovered]
+🔄 **If No Screenshots Shared**:
+- Functional verification: ✅ Complete
+- Visual verification: ⏳ Pending human review and screenshot sharing
 
 ### 6. **Migration Tracking**
 
@@ -283,13 +355,13 @@ if (working in design-system/) → NEVER if (working in components/) → YES (le
 ## Priority Rules
 
 1. **Sequential thinking is MANDATORY** - Structure before coding
-2. **Visual verification is NON-NEGOTIABLE** - Always use Playwright for UI changes
+2. **Visual verification requires human collaboration** - Playwright captures, human reviews, then shares with me
 3. **Thinking techniques are REQUIRED** - Explicitly state which one and why
 4. **New goes to design-system/** - No exceptions
 5. **components/ui/* has migration priority** - These are easiest to move
 6. **Don't break production** - Gradual migration over big bang
 7. **Document every migration** - Use memory to track decisions
-8. **Test visual consistency** - Screenshots at all breakpoints
+8. **Test visual consistency** - Screenshots at all breakpoints + human review
 9. **No mixed imports** - design-system/* should never import from components/*
 10. **Progress over perfection** - Ship working features while improving architecture
 
@@ -302,7 +374,10 @@ if (working in design-system/) → NEVER if (working in components/) → YES (le
 - [ ] Created proper file structure
 - [ ] No imports from components/* in new code
 - [ ] Added TypeScript types
-- [ ] Verified with Playwright at all breakpoints
+- [ ] Captured screenshots with Playwright at all breakpoints
+- [ ] Human reviewed screenshot files for visual quality
+- [ ] Screenshots shared with me for collaborative analysis
+- [ ] Visual verification confirmed through shared images
 - [ ] Documented migration decision in memory
 - [ ] Updated any affected imports (if safe)
 
