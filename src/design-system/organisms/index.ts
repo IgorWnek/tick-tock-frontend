@@ -14,8 +14,8 @@ export { LoginForm } from './LoginForm';
 export type { LoginFormProps } from './LoginForm/LoginForm.types';
 
 // UserMenu organism exports
-// export { UserMenu } from './UserMenu';
-// export type { UserMenuProps } from './UserMenu/UserMenu.types';
+export { UserMenu } from './UserMenu';
+export type { UserMenuProps } from './UserMenu/UserMenu.types';
 
 // ProfileForm organism exports
 // export { ProfileForm } from './ProfileForm';

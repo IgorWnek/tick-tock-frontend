@@ -18,8 +18,38 @@ export { UserInfo } from './UserInfo';
 export type { UserInfoProps, UserInfoUser } from './UserInfo/UserInfo.types';
 
 // DropdownMenu molecule exports
-// export { DropdownMenu } from './DropdownMenu';
-// export type { DropdownMenuProps } from './DropdownMenu/DropdownMenu.types';
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from './DropdownMenu';
+export type {
+  DropdownMenuProps,
+  DropdownMenuTriggerProps,
+  DropdownMenuContentProps,
+  DropdownMenuGroupProps,
+  DropdownMenuItemProps,
+  DropdownMenuCheckboxItemProps,
+  DropdownMenuRadioGroupProps,
+  DropdownMenuRadioItemProps,
+  DropdownMenuLabelProps,
+  DropdownMenuSeparatorProps,
+  DropdownMenuShortcutProps,
+  DropdownMenuSubProps,
+  DropdownMenuSubTriggerProps,
+  DropdownMenuSubContentProps,
+} from './DropdownMenu/DropdownMenu.types';
 
 // Note: Exports are commented out until components are implemented
 // This prevents TypeScript compilation errors during development
