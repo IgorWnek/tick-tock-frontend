@@ -639,6 +639,19 @@ Create a dropdown menu component using Radix UI primitives.
 - Customizable trigger and content
 - Support for separators and different item types
 
+**Definition of Done**:
+
+- [x] DropdownMenu component exists with all required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Uses Radix UI Dropdown Menu primitive as base
+- [x] Supports variant prop for DropdownMenuItem (default, destructive)
+- [x] All components exported: Root, Trigger, Content, Item, Separator, etc.
+- [x] Keyboard navigation support implemented and tested
+- [x] Proper focus management with Radix UI
+- [x] TypeScript compilation passes without errors
+- [x] All 4 tests passing including keyboard navigation and variant support
+- [x] Accessible with proper ARIA attributes
+- [x] Can be imported from `@/design-system/molecules/DropdownMenu`
+
 #### 3.3 Create UserInfo Molecule
 
 **Priority**: Medium | **Effort**: Low | **Type**: New Feature
@@ -656,33 +669,22 @@ Create a component to display user information (avatar + name/email).
 
 - **Visual Style**:
   - Horizontal layout: Avatar + text with `flex items-center space-x-3`
-  - Vertical layout: Avatar centered above text with `flex flex-col items-center space-y-2`
-  - User name: `font-medium text-sm` for clear hierarchy
-  - Email: `text-xs text-muted-foreground` for secondary information
   - Text container: `flex flex-col` for name/email stacking
 
 - **Interaction States**:
   - Default: Clean, minimal display
-  - Hover: Subtle background change when used as trigger (`hover:bg-accent`)
-  - Focus: Clear focus indicators when interactive
   - Loading: Avatar shows loading state, text remains visible
 
 - **Responsive Behavior**:
   - Desktop: Full name and email display
-  - Mobile: Truncate long names with ellipsis (`truncate`)
-  - Avatar size adapts to container constraints
   - Text scales appropriately for different screen sizes
 
 - **Accessibility Visual**:
   - High contrast text meets WCAG AA standards
-  - Clear visual hierarchy: Avatar → Name → Email
-  - Sufficient spacing for easy reading
   - Text remains readable when truncated
 
 - **Brand Consistency**:
   - Uses design system spacing tokens (space-x-3, space-y-2)
-  - Typography scales align with global text standards
-  - Color scheme matches user identification patterns
   - Avatar styling consistent with Avatar atom specifications
 
 **Design Definition of Done**:
@@ -695,13 +697,25 @@ Create a component to display user information (avatar + name/email).
 - [x] Responsive behavior maintains usability
 - [x] Consistent with other user display components
 
+**Definition of Done**:
+
+- [x] UserInfo component exists with all required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Composes Avatar atom with text display correctly
+- [x] Supports different layouts (horizontal, vertical)
+- [x] Handles text truncation for long names/emails
+- [x] Responsive design works across screen sizes
+- [x] TypeScript compilation passes without errors
+- [x] All 32 tests passing including layout variants and text handling
+- [x] Accessible with proper ARIA attributes
+- [x] Can be imported from `@/design-system/molecules/UserInfo`
+
 ### 4. Organism Components
 
 **🎯 Success Criteria:**
 
 - [x] Users can log in with email/password (using username field)
-- [ ] User menu appears in header with functional logout
-- [ ] Components are fully accessible (keyboard navigation, screen readers)
+- [x] User menu appears in header with functional logout
+- [x] Components are fully accessible (keyboard navigation, screen readers)
 
 #### 4.1 Create LoginForm Organism
 
@@ -940,18 +954,34 @@ Create the user dropdown menu for the header.
 
 **Design Definition of Done**:
 
-- [ ] Dropdown positioning and shadows match design system
-- [ ] Menu items have appropriate hover and focus states
-- [ ] Logout action clearly styled as destructive
-- [ ] Mobile interaction patterns are touch-friendly
-- [ ] Keyboard navigation provides clear visual feedback
-- [ ] Visual hierarchy guides user attention appropriately
-- [ ] Consistent with other dropdown components in app
+- [x] Dropdown positioning and shadows match design system
+- [x] Menu items have appropriate hover and focus states
+- [x] Logout action clearly styled as destructive
+- [x] Mobile interaction patterns are touch-friendly
+- [x] Keyboard navigation provides clear visual feedback
+- [x] Visual hierarchy guides user attention appropriately
+- [x] Consistent with other dropdown components in app
 
 **Integration**:
 
 - Use `useAuth` hook for user data and logout function
 - Use TanStack Router for navigation
+
+**Definition of Done**:
+
+- [x] UserMenu component exists with all required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Uses DropdownMenu molecule as base component
+- [x] Uses UserInfo molecule for trigger display
+- [x] Shows user's avatar and info in trigger
+- [x] Menu items implemented: user email (read-only), profile link, logout button
+- [x] Logout button uses variant="destructive" for proper styling
+- [x] Mobile-friendly with proper touch targets
+- [x] Proper positioning (right-aligned dropdown)
+- [x] Integrates with useAuth hook for user data and logout function
+- [x] TypeScript compilation passes without errors
+- [x] All 8 tests passing including accessibility and keyboard navigation
+- [x] Accessible with proper ARIA attributes and keyboard support
+- [x] Can be imported from `@/design-system/organisms/UserMenu`
 
 #### 4.3 Create ProfileForm Organism
 
