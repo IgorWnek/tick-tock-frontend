@@ -18,8 +18,8 @@ export { UserMenu } from './UserMenu';
 export type { UserMenuProps } from './UserMenu/UserMenu.types';
 
 // ProfileForm organism exports
-// export { ProfileForm } from './ProfileForm';
-// export type { ProfileFormProps } from './ProfileForm/ProfileForm.types';
+export { ProfileForm } from './ProfileForm';
+export type { ProfileFormProps } from './ProfileForm/ProfileForm.types';
 
 // Note: Exports are commented out until components are implemented
 // This prevents TypeScript compilation errors during development

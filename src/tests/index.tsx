@@ -3,6 +3,7 @@ import { Queries } from '@testing-library/dom';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import { vi } from 'vitest';
 import {
   RouterProvider,
   createRootRoute,
