@@ -26,7 +26,7 @@ export * from './atoms';
 // export * from './organisms';
 
 // Templates - Page layouts
-// export * from './templates';
+export * from './templates';
 
 // Note: Molecule, organism, template exports are commented out
 // until components are implemented. This prevents TypeScript compilation
