@@ -347,154 +347,156 @@ export const ProfileForm = ({
 
       {/* Password Change Section */}
       <section className="space-y-6" aria-labelledby="password-heading">
-        <div className="space-y-2">
-          <h2 id="password-heading" className="text-lg font-semibold">
-            Change Password
-          </h2>
-          <p className="text-sm text-muted-foreground">Update your password to keep your account secure.</p>
-        </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            passwordForm.handleSubmit();
-          }}
-          className="space-y-4"
-          noValidate
-        >
-          <passwordForm.Field name="currentPassword">
-            {(field) => {
-              // Handle Zod validation errors
-              const getErrorMessage = () => {
-                const error = field.state.meta.errorMap.onChange;
-                if (Array.isArray(error) && error.length > 0) {
-                  return error[0]?.message || 'Invalid current password';
-                }
-                return undefined;
-              };
-
-              return (
-                <FormField
-                  name={field.name}
-                  label="Current Password"
-                  type="password"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  error={getErrorMessage()}
-                  required
-                  autoComplete="current-password"
-                  data-testid="password-current"
-                />
-              );
-            }}
-          </passwordForm.Field>
-
-          <passwordForm.Field name="newPassword">
-            {(field) => {
-              // Handle Zod validation errors
-              const getErrorMessage = () => {
-                const error = field.state.meta.errorMap.onChange;
-                if (Array.isArray(error) && error.length > 0) {
-                  return error[0]?.message || 'Invalid new password';
-                }
-                return undefined;
-              };
-
-              return (
-                <FormField
-                  name={field.name}
-                  label="New Password"
-                  type="password"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  error={getErrorMessage()}
-                  required
-                  autoComplete="new-password"
-                  data-testid="password-new"
-                />
-              );
-            }}
-          </passwordForm.Field>
-
-          <passwordForm.Field name="confirmPassword">
-            {(field) => {
-              // Handle Zod validation errors
-              const getErrorMessage = () => {
-                const error = field.state.meta.errorMap.onChange;
-                if (Array.isArray(error) && error.length > 0) {
-                  return error[0]?.message || 'Invalid password confirmation';
-                }
-                return undefined;
-              };
-
-              return (
-                <FormField
-                  name={field.name}
-                  label="Confirm New Password"
-                  type="password"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  error={getErrorMessage()}
-                  required
-                  autoComplete="new-password"
-                  data-testid="password-confirm"
-                />
-              );
-            }}
-          </passwordForm.Field>
-
-          {/* Success/Error Messages */}
-          {messages.passwordMessage && (
-            <output
-              className="text-sm text-green-600 bg-green-50 border border-green-200 rounded-md p-3 block"
-              aria-live="polite"
-              data-testid="password-success"
-            >
-              {messages.passwordMessage}
-            </output>
-          )}
-
-          {messages.passwordError && (
-            <div
-              className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3"
-              role="alert"
-              aria-live="assertive"
-              data-testid="password-error"
-            >
-              {messages.passwordError}
-            </div>
-          )}
-
-          {/* Password Action Buttons */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                passwordForm.reset();
-                setMessages((prev) => ({
-                  ...prev,
-                  passwordMessage: undefined,
-                  passwordError: undefined,
-                }));
-              }}
-              disabled={!isPasswordDirty || updatePassword.isPending}
-              data-testid="password-cancel"
-            >
-              Reset Changes
-            </Button>
-            <Button
-              type="submit"
-              disabled={!passwordForm.state.canSubmit || updatePassword.isPending}
-              data-testid="password-save"
-            >
-              {updatePassword.isPending ? 'Updating...' : 'Update Password'}
-            </Button>
+        <div className="space-y-4 p-4 sm:p-6 bg-muted/10 rounded-lg border border-border/50">
+          <div className="space-y-2">
+            <h2 id="password-heading" className="text-lg font-semibold">
+              Change Password
+            </h2>
+            <p className="text-sm text-muted-foreground">Update your password to keep your account secure.</p>
           </div>
-        </form>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              passwordForm.handleSubmit();
+            }}
+            className="space-y-4"
+            noValidate
+          >
+            <passwordForm.Field name="currentPassword">
+              {(field) => {
+                // Handle Zod validation errors
+                const getErrorMessage = () => {
+                  const error = field.state.meta.errorMap.onChange;
+                  if (Array.isArray(error) && error.length > 0) {
+                    return error[0]?.message || 'Invalid current password';
+                  }
+                  return undefined;
+                };
+
+                return (
+                  <FormField
+                    name={field.name}
+                    label="Current Password"
+                    type="password"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    error={getErrorMessage()}
+                    required
+                    autoComplete="current-password"
+                    data-testid="password-current"
+                  />
+                );
+              }}
+            </passwordForm.Field>
+
+            <passwordForm.Field name="newPassword">
+              {(field) => {
+                // Handle Zod validation errors
+                const getErrorMessage = () => {
+                  const error = field.state.meta.errorMap.onChange;
+                  if (Array.isArray(error) && error.length > 0) {
+                    return error[0]?.message || 'Invalid new password';
+                  }
+                  return undefined;
+                };
+
+                return (
+                  <FormField
+                    name={field.name}
+                    label="New Password"
+                    type="password"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    error={getErrorMessage()}
+                    required
+                    autoComplete="new-password"
+                    data-testid="password-new"
+                  />
+                );
+              }}
+            </passwordForm.Field>
+
+            <passwordForm.Field name="confirmPassword">
+              {(field) => {
+                // Handle Zod validation errors
+                const getErrorMessage = () => {
+                  const error = field.state.meta.errorMap.onChange;
+                  if (Array.isArray(error) && error.length > 0) {
+                    return error[0]?.message || 'Invalid password confirmation';
+                  }
+                  return undefined;
+                };
+
+                return (
+                  <FormField
+                    name={field.name}
+                    label="Confirm New Password"
+                    type="password"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    error={getErrorMessage()}
+                    required
+                    autoComplete="new-password"
+                    data-testid="password-confirm"
+                  />
+                );
+              }}
+            </passwordForm.Field>
+
+            {/* Success/Error Messages */}
+            {messages.passwordMessage && (
+              <output
+                className="text-sm text-green-600 bg-green-50 border border-green-200 rounded-md p-3 block"
+                aria-live="polite"
+                data-testid="password-success"
+              >
+                {messages.passwordMessage}
+              </output>
+            )}
+
+            {messages.passwordError && (
+              <div
+                className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3"
+                role="alert"
+                aria-live="assertive"
+                data-testid="password-error"
+              >
+                {messages.passwordError}
+              </div>
+            )}
+
+            {/* Password Action Buttons */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  passwordForm.reset();
+                  setMessages((prev) => ({
+                    ...prev,
+                    passwordMessage: undefined,
+                    passwordError: undefined,
+                  }));
+                }}
+                disabled={!isPasswordDirty || updatePassword.isPending}
+                data-testid="password-cancel"
+              >
+                Reset Changes
+              </Button>
+              <Button
+                type="submit"
+                disabled={!passwordForm.state.canSubmit || updatePassword.isPending}
+                data-testid="password-save"
+              >
+                {updatePassword.isPending ? 'Updating...' : 'Update Password'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </section>
 
       {/* Global Actions */}
