@@ -10,8 +10,8 @@
  */
 
 // AuthTemplate exports
-// export { AuthTemplate } from './AuthTemplate';
-// export type { AuthTemplateProps } from './AuthTemplate/AuthTemplate.types';
+export { AuthTemplate } from './AuthTemplate';
+export type { AuthTemplateProps } from './AuthTemplate/AuthTemplate.types';
 
 // ProfileTemplate exports
 // export { ProfileTemplate } from './ProfileTemplate';
