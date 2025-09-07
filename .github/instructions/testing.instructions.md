@@ -234,6 +234,122 @@ Notes:
 
 Example (pagination placeholderData): see `./data-architecture.instructions.md` for a working snippet and test sketch.
 
+## Common Testing Pitfalls and Solutions
+
+### Test Logic Contradictions
+
+**Problem**: Tests that expect elements to exist after actions that should hide/remove them.
+
+```tsx
+// ❌ Logical contradiction - expecting close button after closing
+it('should close modal when close button clicked', async () => {
+  const user = userEvent.setup();
+  render(<Modal />);
+
+  const closeButton = screen.getByRole('button', { name: 'Close' });
+  await user.click(closeButton);
+
+  // This fails because close button is gone after modal closes
+  expect(closeButton).toBeInTheDocument();
+});
+
+// ✅ Test the result of the action, not the element that triggered it
+it('should close modal when close button clicked', async () => {
+  const user = userEvent.setup();
+  render(<Modal />);
+
+  const closeButton = screen.getByRole('button', { name: 'Close' });
+  await user.click(closeButton);
+
+  // Verify modal is closed by checking if trigger button is accessible again
+  expect(screen.getByRole('button', { name: 'Open Modal' })).toBeInTheDocument();
+  // Or verify modal content is gone
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
+```
+
+### Multiple Element Disambiguation
+
+**Problem**: Multiple elements with same text causing ambiguous queries.
+
+```tsx
+// ❌ Fails when multiple "Profile" texts exist
+expect(screen.getByText('Profile')).toBeInTheDocument();
+
+// ✅ Use scoped queries with within()
+const breadcrumbNav = screen.getByRole('navigation', { name: 'Breadcrumb' });
+expect(within(breadcrumbNav).getByText('Profile')).toBeInTheDocument();
+
+// ✅ Or use getAllByText when multiple elements are expected
+const profileTexts = screen.getAllByText('Profile');
+expect(profileTexts).toHaveLength(2); // sidebar + breadcrumb
+expect(profileTexts[0]).toBeInTheDocument();
+
+// ✅ Use more specific queries when possible
+expect(screen.getByRole('heading', { level: 1, name: 'Profile' })).toBeInTheDocument();
+```
+
+### Mobile Interaction Testing
+
+**Problem**: Mobile toggle/sidebar interactions require careful state verification.
+
+```tsx
+// ❌ Testing implementation details or contradictory logic
+it('should toggle sidebar', async () => {
+  const user = userEvent.setup();
+  render(<Layout />);
+
+  const toggleButton = screen.getByRole('button', { name: 'Toggle sidebar' });
+  await user.click(toggleButton);
+
+  // Wrong: testing CSS classes instead of behavior
+  expect(screen.getByTestId('sidebar')).toHaveClass('open');
+});
+
+// ✅ Test accessible behavior and state changes
+it('should toggle sidebar', async () => {
+  const user = userEvent.setup();
+  render(<Layout />);
+
+  const toggleButton = screen.getByRole('button', { name: 'Toggle sidebar' });
+  await user.click(toggleButton);
+
+  // Verify ARIA state or functional changes
+  expect(toggleButton).toHaveAttribute('aria-expanded', 'true');
+  // Or verify navigation is accessible
+  expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
+});
+```
+
+### State-Based Assertions
+
+**Problem**: Asserting on transient states or wrong timing.
+
+```tsx
+// ❌ Race conditions and timing issues
+it('should show loading then data', async () => {
+  render(<DataComponent />);
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  expect(screen.getByText('Data loaded')).toBeInTheDocument(); // May fail due to timing
+});
+
+// ✅ Use proper async patterns
+it('should show loading then data', async () => {
+  render(<DataComponent />);
+
+  // Assert loading state exists initially
+  expect(screen.getByRole('status')).toBeInTheDocument();
+
+  // Wait for data to appear
+  await screen.findByText('Data loaded');
+
+  // Verify loading state is gone
+  await waitFor(() => {
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});
+```
+
 ## Patterns to avoid
 
 - Snapshot tests for dynamic UI
@@ -241,6 +357,9 @@ Example (pagination placeholderData): see `./data-architecture.instructions.md` 
 - Overusing `waitFor` without a clear expectation
 - Mocking React hooks that you can exercise realistically via DOM interactions
 - Calling network directly in tests; always go through MSW
+- Testing elements after actions that should hide/remove them
+- Using ambiguous queries when multiple elements exist
+- Testing CSS classes instead of accessible behavior
 
 ## Quick checklist
 

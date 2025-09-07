@@ -310,6 +310,31 @@ const element = document.querySelector('.some-class');
 // ✅ Use Testing Library queries with within() for specificity
 const nav = screen.getByRole('navigation');
 expect(within(nav).getByText('Item')).toBeInTheDocument();
+
+// ❌ Don't expect elements to exist after actions that hide them
+it('should close sidebar', async () => {
+  const closeButton = screen.getByRole('button', { name: 'Close' });
+  await user.click(closeButton);
+  expect(closeButton).toBeInTheDocument(); // ❌ Contradictory logic
+});
+
+// ✅ Test the result of the action instead
+it('should close sidebar', async () => {
+  const closeButton = screen.getByRole('button', { name: 'Close' });
+  await user.click(closeButton);
+  // Verify toggle button is accessible again (sidebar closed successfully)
+  expect(screen.getByRole('button', { name: 'Toggle sidebar' })).toBeInTheDocument();
+});
+
+// ❌ Don't use ambiguous queries for duplicate text
+expect(screen.getByText('Profile')).toBeInTheDocument(); // Fails with multiple "Profile" elements
+
+// ✅ Use getAllByText for expected duplicates or scope with within()
+const allProfiles = screen.getAllByText('Profile');
+expect(allProfiles).toHaveLength(2); // sidebar + breadcrumb
+// Or scope to specific area
+const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' });
+expect(within(breadcrumb).getByText('Profile')).toBeInTheDocument();
 ```
 
 ## Quick Checklist for Template Tests
@@ -324,5 +349,7 @@ expect(within(nav).getByText('Item')).toBeInTheDocument();
 - [ ] Avoids direct DOM access violations
 - [ ] Tests children rendering in content areas
 - [ ] Covers prop forwarding and className application
+- [ ] Avoids test logic contradictions (expecting elements after they should be hidden)
+- [ ] Uses `getAllByText()` or scoped queries for duplicate text elements
 
 This pattern ensures reliable, maintainable tests for template-level components while avoiding the complexity issues we discovered with custom test helpers.
