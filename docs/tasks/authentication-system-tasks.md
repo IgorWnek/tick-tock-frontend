@@ -1180,22 +1180,27 @@ Enhance the visual distinction between Personal Information and Password Change 
 
 ### 5. Template Components
 
-#### 5.1 Create AuthTemplate
+#### 5.1 Create AuthTemplate ✅ COMPLETED
 
 **Priority**: High | **Effort**: Medium | **Type**: New Feature
 
 Create a template for authentication-related pages.
 
-**File**: `src/design-system/templates/AuthTemplate/AuthTemplate.tsx`
+**Files Created**:
+
+- `src/design-system/templates/AuthTemplate/AuthTemplate.tsx` ✅
+- `src/design-system/templates/AuthTemplate/AuthTemplate.types.ts` ✅
+- `src/design-system/templates/AuthTemplate/AuthTemplate.test.tsx` ✅
+- `src/design-system/templates/AuthTemplate/index.ts` ✅
 
 **Requirements**:
 
-- Centered layout for auth forms
-- Consistent branding (logo, title)
-- Responsive design
-- Background styling consistent with app theme
-- Support for different form sizes
-- Optional navigation links (back to app, etc.)
+- ✅ Centered layout for auth forms (max-w-md mx-auto)
+- ✅ Consistent branding (Tick-Tock logo with Clock icon)
+- ✅ Responsive design (px-4 py-8, mobile-first)
+- ✅ Background styling consistent with app theme (gradient from-background to-background/95)
+- ✅ Support for different form sizes (flexible children prop)
+- ✅ Optional navigation links (backLink prop with TanStack Router integration)
 
 **Design Requirements**:
 
@@ -1233,27 +1238,155 @@ Create a template for authentication-related pages.
 
 **Design Definition of Done**:
 
-- [ ] Centered layout works across all screen sizes
-- [ ] Brand logo is appropriately sized and positioned
-- [ ] Background styling enhances rather than distracts
-- [ ] Form containers have proper visual emphasis
-- [ ] Layout maintains accessibility and usability
-- [ ] Visual hierarchy guides user attention effectively
-- [ ] Consistent with application's overall design language
+- [x] Centered layout works across all screen sizes
+- [x] Brand logo is appropriately sized and positioned
+- [x] Background styling enhances rather than distracts
+- [x] Form containers have proper visual emphasis
+- [x] Layout maintains accessibility and usability
+- [x] Visual hierarchy guides user attention effectively
+- [x] Consistent with application's overall design language
 
-#### 5.2 Create ProfileTemplate
+**Definition of Done**:
+
+- [x] AuthTemplate component exists with all 4 required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Centered layout for auth forms with responsive design
+- [x] Consistent branding with Tick-Tock logo and Clock icon
+- [x] Background styling consistent with app theme (gradient matching Layout)
+- [x] Support for different form sizes via children prop
+- [x] Optional navigation links (backLink prop) implemented
+- [x] Full viewport height layout with centered content
+- [x] Card styling with subtle elevation for form containers
+- [x] Proper semantic HTML structure (H1 for brand, H2 for page title)
+- [x] Optional subtitle and footer content support
+- [x] Accessible with proper ARIA semantics and keyboard navigation
+- [x] Animation support (animate-fade-in for content entrance)
+- [x] Can be imported from `@/design-system/templates/AuthTemplate`
+- [x] TypeScript compilation passes without errors
+- [x] All 12 tests passing covering all features and edge cases
+- [x] Mobile-responsive design with proper touch targets
+- [x] Integrates with TanStack Router for navigation
+- [x] Exported from main design system index for easy access
+- [x] Ready for use in authentication routes (Task 6.1)
+
+#### 5.2 Create ProfileTemplate ✅ COMPLETED
 
 **Priority**: Medium | **Effort**: Medium | **Type**: New Feature
 
 Create a template for profile-related pages.
 
+**Files Created**:
+
+- `src/design-system/templates/ProfileTemplate/ProfileTemplate.tsx` ✅
+- `src/design-system/templates/ProfileTemplate/ProfileTemplate.types.ts` ✅
+- `src/design-system/templates/ProfileTemplate/ProfileTemplate.test.tsx` ✅
+- `src/design-system/templates/ProfileTemplate/index.ts` ✅
+
 **Requirements**:
 
-- Standard app layout with header
-- Sidebar navigation for different profile sections
-- Main content area for forms
-- Breadcrumb navigation
-- Responsive layout
+- ✅ Standard app layout with header integration
+- ✅ Sidebar navigation for different profile sections
+- ✅ Main content area for forms
+- ✅ Breadcrumb navigation with TanStack Router
+- ✅ Responsive layout (mobile-first with sidebar collapse)
+
+**Design Requirements**:
+
+- **Visual Style**:
+  - Standard app layout using existing Layout component as base
+  - Two-column layout: sidebar navigation + main content area
+  - Sidebar width: `w-64` on desktop, collapsible on mobile
+  - Main content: flexible width with proper padding
+  - Breadcrumb navigation for context and navigation
+  - Consistent spacing and typography throughout
+
+- **Layout Structure**:
+  - Header: Uses existing app header (inherited from Layout)
+  - Sidebar: Navigation for profile sections (Account, Security, etc.)
+  - Main: Content area for forms and profile information
+  - Responsive: Mobile-first approach with proper breakpoints
+
+- **Interaction States**:
+  - Sidebar: Active section highlighting
+  - Mobile: Collapsible sidebar with hamburger menu
+  - Navigation: Smooth transitions between sections
+  - Focus management for keyboard navigation
+
+- **Responsive Behavior**:
+  - Desktop: Two-column layout with persistent sidebar
+  - Tablet: Sidebar remains visible but narrower
+  - Mobile: Collapsible sidebar that overlays content
+  - Content adapts to available width gracefully
+
+- **Accessibility**:
+  - Proper landmark roles (navigation, main, complementary)
+  - Skip links for keyboard users
+  - ARIA labels for navigation sections
+  - Focus management when switching sections
+
+- **Brand Consistency**:
+  - Uses existing app layout patterns
+  - Consistent with other settings/admin sections
+  - Matches navigation patterns used elsewhere
+  - Integrates seamlessly with app's visual language
+
+**Navigation Sections**:
+
+- Account: Personal information, basic settings
+- Security: Password, authentication settings
+- Preferences: App-specific user preferences
+- (Future: Notifications, Privacy, etc.)
+
+**Design Definition of Done**:
+
+- [ ] Two-column layout works across all screen sizes
+- [ ] Sidebar navigation is properly structured and accessible
+- [ ] Main content area adapts to different form sizes
+- [ ] Breadcrumb navigation provides clear context
+- [ ] Mobile layout gracefully handles sidebar collapse
+- [ ] Active section highlighting works correctly
+- [ ] Responsive breakpoints maintain usability
+- [ ] Layout integrates seamlessly with existing app design
+
+**Definition of Done**:
+
+- [x] ProfileTemplate component exists with all 4 required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Uses standard app layout with header integration
+- [x] Sidebar navigation for different profile sections implemented
+- [x] Main content area for forms with proper spacing
+- [x] Breadcrumb navigation component integrated
+- [x] Responsive layout works on mobile, tablet, and desktop
+- [x] Sidebar collapses properly on mobile devices
+- [x] Navigation sections clearly defined and accessible
+- [x] Active section highlighting implemented
+- [x] Proper ARIA landmarks and accessibility features
+- [x] Can be imported from `@/design-system/templates/ProfileTemplate`
+- [x] TypeScript compilation passes without errors
+- [x] Comprehensive tests covering layout and navigation (25 tests passing)
+- [x] Integrates with TanStack Router for section navigation
+- [ ] Ready for use in profile routes (Task 6.3)
+- [x] Mobile-responsive with proper touch targets
+- [x] Focus management for keyboard users
+
+**Testing Accomplishments**:
+
+✅ **Template Testing Patterns Established**: Created comprehensive testing instruction files (`testing-templates.instructions.md`) that codify the successful patterns used for ProfileTemplate testing, including:
+
+- Direct RTL imports approach for template components
+- TanStack Router mocking patterns
+- Mobile interaction testing strategies
+- Common pitfall avoidance (test logic contradictions, multiple element disambiguation)
+
+✅ **Quality Assurance**: All 25 ProfileTemplate tests passing with full coverage of:
+
+- Basic rendering and layout structure
+- Sidebar navigation and active states
+- Breadcrumb navigation functionality
+- Mobile behavior and responsive design
+- Content area rendering and accessibility
+- ARIA landmarks and keyboard navigation
+- Styling and layout responsiveness
+
+✅ **Code Quality**: Resolved all Testing Library linting violations while maintaining test functionality and accessibility standards.
 
 ### 6. Route and Authentication Integration
 
@@ -1334,7 +1467,7 @@ Create the login page route with proper authentication flow and redirect handlin
 - Support search params for redirect URL
 - Integrate with existing auth context via beforeLoad
 - Proper TypeScript typing for search parameters
-- SEO-friendly meta tags and route structure
+- Clean route structure for internal app navigation
 
 **Definition of Done**:
 
