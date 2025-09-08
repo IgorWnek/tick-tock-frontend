@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileDemoRouteImport } from './routes/profile-demo'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogEntryRouteImport } from './routes/log-entry'
 import { Route as CalendarSolutionsRouteImport } from './routes/calendar-solutions'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +20,11 @@ import { Route as DayDateRouteImport } from './routes/day/$date'
 const ProfileDemoRoute = ProfileDemoRouteImport.update({
   id: '/profile-demo',
   path: '/profile-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogEntryRoute = LogEntryRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar-solutions': typeof CalendarSolutionsRoute
   '/log-entry': typeof LogEntryRoute
+  '/login': typeof LoginRoute
   '/profile-demo': typeof ProfileDemoRoute
   '/day/$date': typeof DayDateRoute
   '/about': typeof AboutIndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar-solutions': typeof CalendarSolutionsRoute
   '/log-entry': typeof LogEntryRoute
+  '/login': typeof LoginRoute
   '/profile-demo': typeof ProfileDemoRoute
   '/day/$date': typeof DayDateRoute
   '/about': typeof AboutIndexRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/calendar-solutions': typeof CalendarSolutionsRoute
   '/log-entry': typeof LogEntryRoute
+  '/login': typeof LoginRoute
   '/profile-demo': typeof ProfileDemoRoute
   '/day/$date': typeof DayDateRoute
   '/about/': typeof AboutIndexRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar-solutions'
     | '/log-entry'
+    | '/login'
     | '/profile-demo'
     | '/day/$date'
     | '/about'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar-solutions'
     | '/log-entry'
+    | '/login'
     | '/profile-demo'
     | '/day/$date'
     | '/about'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar-solutions'
     | '/log-entry'
+    | '/login'
     | '/profile-demo'
     | '/day/$date'
     | '/about/'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarSolutionsRoute: typeof CalendarSolutionsRoute
   LogEntryRoute: typeof LogEntryRoute
+  LoginRoute: typeof LoginRoute
   ProfileDemoRoute: typeof ProfileDemoRoute
   DayDateRoute: typeof DayDateRoute
   AboutIndexRoute: typeof AboutIndexRoute
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/profile-demo'
       fullPath: '/profile-demo'
       preLoaderRoute: typeof ProfileDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/log-entry': {
@@ -159,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarSolutionsRoute: CalendarSolutionsRoute,
   LogEntryRoute: LogEntryRoute,
+  LoginRoute: LoginRoute,
   ProfileDemoRoute: ProfileDemoRoute,
   DayDateRoute: DayDateRoute,
   AboutIndexRoute: AboutIndexRoute,

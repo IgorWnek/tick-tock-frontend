@@ -9,13 +9,10 @@
  * data or content. They define the slots and regions where organisms live.
  */
 
-// AuthTemplate exports
+export { AppTemplate } from './AppTemplate';
 export { AuthTemplate } from './AuthTemplate';
+export { ProfileTemplate } from './ProfileTemplate';
+
+export type { AppTemplateProps } from './AppTemplate/AppTemplate.types';
 export type { AuthTemplateProps } from './AuthTemplate/AuthTemplate.types';
-
-// ProfileTemplate exports
-// export { ProfileTemplate } from './ProfileTemplate';
-// export type { ProfileTemplateProps } from './ProfileTemplate/ProfileTemplate.types';
-
-// Note: Exports are commented out until components are implemented
-// This prevents TypeScript compilation errors during development
+export type { ProfileTemplateProps } from './ProfileTemplate/ProfileTemplate.types';
