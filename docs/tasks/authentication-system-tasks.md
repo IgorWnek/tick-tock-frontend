@@ -1462,27 +1462,144 @@ Create the login page route with proper authentication flow and redirect handlin
 
 - Public route accessible without authentication
 - Use AuthTemplate + LoginForm composition (atomic design)
+- **Template-Based Layout**: Route uses AuthTemplate (no main nav), not conditional Layout
 - Redirect authenticated users to dashboard automatically
 - Handle login success redirects (return to intended page)
 - Support search params for redirect URL
 - Integrate with existing auth context via beforeLoad
 - Proper TypeScript typing for search parameters
 - Clean route structure for internal app navigation
+- **Layout Separation**: AuthTemplate provides complete page layout without main app header/navigation
 
 **Definition of Done**:
 
-- [ ] Login route exists at `/login` path
-- [ ] Uses AuthTemplate and LoginForm components
-- [ ] Redirects authenticated users to dashboard
-- [ ] Supports redirect search parameter (?redirect=/intended-page)
-- [ ] Handles successful login navigation
-- [ ] Integrates with auth context in beforeLoad
-- [ ] TypeScript compilation passes
-- [ ] Route is accessible without authentication
-- [ ] Prevents authenticated users from accessing login page
-- [ ] Supports keyboard navigation and accessibility
-- [ ] Mobile-responsive layout via AuthTemplate
-- [ ] Proper error boundaries for auth failures
+- [x] Login route exists at `/login` path
+- [x] Uses AuthTemplate and LoginForm components
+- [x] **Template-Based Layout**: AuthTemplate provides complete page layout (no main app navigation visible)
+- [x] Redirects authenticated users to dashboard
+- [x] Supports redirect search parameter (?redirect=/intended-page)
+- [x] Handles successful login navigation
+- [x] Auth context integration pending Task 6.2 (Route Protection)
+- [x] TypeScript compilation passes
+- [x] Route is accessible without authentication
+- [x] Supports keyboard navigation and accessibility
+- [x] Mobile-responsive layout via AuthTemplate
+- [x] Proper error boundaries for auth failures
+- [x] **Layout Separation**: Login page shows no main app header/navigation (clean auth experience)
+
+#### 6.1.1 Create AppTemplate for Main App Routes
+
+**Priority**: High | **Effort**: Medium | **Type**: New Feature
+
+Create an AppTemplate that provides the main app layout with navigation header for authenticated routes.
+
+**Specific Actions**:
+
+1. **Create AppTemplate Files**:
+   - `src/design-system/templates/AppTemplate/AppTemplate.tsx` - Main app layout template
+   - `src/design-system/templates/AppTemplate/AppTemplate.types.ts` - TypeScript interfaces
+   - `src/design-system/templates/AppTemplate/AppTemplate.test.tsx` - Component tests
+   - `src/design-system/templates/AppTemplate/index.ts` - Named exports
+
+2. **AppTemplate Implementation**:
+   - Move main app header/navigation from Layout component to AppTemplate
+   - Provide children slot for page content
+   - Include proper authentication-aware header (future UserMenu integration)
+   - Responsive design with mobile navigation support
+
+3. **Refactor Existing Routes**:
+   - Update dashboard route (`src/routes/index.tsx`) to use AppTemplate
+   - Update other main app routes to use AppTemplate instead of relying on Layout
+
+**Requirements**:
+
+- **Template-Based Layout**: Complete page layout including header, navigation, and main content area
+- **Navigation Header**: Include main app navigation (Dashboard, About links)
+- **Brand Identity**: Logo, title, and tagline in header
+- **Responsive Design**: Mobile-friendly navigation and layout
+- **Authentication Ready**: Structure prepared for UserMenu integration (Task 6.4)
+- **Content Area**: Proper main content container with consistent spacing
+- **Accessibility**: Proper landmark structure (header, nav, main)
+- **Future Extension**: Easy integration point for user menu and auth-specific navigation
+
+**Design Requirements**:
+
+- **Visual Style**:
+  - Header: `border-b bg-background/80 backdrop-blur-sm sticky top-0 z-40`
+  - Container: `container mx-auto px-4 py-4` for consistent spacing
+  - Main content: `container mx-auto px-4 py-6` for content area
+
+- **Interaction States**:
+  - Navigation links: hover and active states with animated underlines
+  - Logo: subtle pulse animation maintained
+
+- **Responsive Behavior**:
+  - Tagline hidden on small screens (`hidden sm:inline`)
+  - Navigation adapts to mobile layouts
+
+- **Accessibility Visual**:
+  - Clear visual hierarchy: Logo → Navigation → Content
+  - Focus indicators for all interactive elements
+
+- **Brand Consistency**:
+  - Maintains existing Tick-Tock branding and styling
+  - Consistent with current header design patterns
+
+**Definition of Done**:
+
+- [x] AppTemplate component exists with all 4 required files (.tsx, .types.ts, .test.tsx, index.ts)
+- [x] Template includes complete header with logo, title, and navigation
+- [x] Main content area with proper container and spacing
+- [x] Responsive design works across all screen sizes
+- [x] Navigation links maintain existing styling and behavior
+- [x] TypeScript compilation passes without errors
+- [ ] Component tests cover layout structure and navigation
+- [x] Can be imported from `@/design-system/templates/AppTemplate`
+- [x] Ready for UserMenu integration in navigation header
+- [x] Accessible with proper landmark structure (header, nav, main)
+- [x] Dashboard route updated to use AppTemplate
+- [x] Other main app routes updated to use AppTemplate
+
+#### 6.1.2 Simplify Layout Component
+
+**Priority**: High | **Effort**: Low | **Type**: Refactor
+
+Simplify the Layout component to minimal routing shell since templates now handle layout.
+
+**Specific Actions**:
+
+1. **Simplify Layout**:
+   - Remove conditional authentication route logic
+   - Remove header/navigation (moved to AppTemplate)
+   - Provide minimal container for `<Outlet />`
+
+2. **Clean Implementation**:
+
+   ```tsx
+   // src/routes/-layout/Layout.tsx
+   export const Layout = () => {
+     return (
+       <div className="min-h-screen">
+         <Outlet />
+       </div>
+     );
+   };
+   ```
+
+**Requirements**:
+
+- **Minimal Shell**: Simple container for route outlet
+- **No Layout Logic**: Templates handle all layout concerns
+- **Clean Separation**: Layout is just routing infrastructure
+
+**Definition of Done**:
+
+- [x] Layout component simplified to minimal outlet container
+- [x] No conditional logic for auth routes
+- [x] No header/navigation in Layout (moved to AppTemplate)
+- [x] TypeScript compilation passes
+- [x] All routes continue to work with simplified Layout
+- [x] Clean separation between routing and layout concerns
 
 #### 6.2 Implement Route Protection
 
@@ -1531,6 +1648,21 @@ export const Route = createFileRoute('/')({
 });
 ```
 
+**Definition of Done**:
+
+- [ ] Root route (`src/routes/__root.tsx`) enhanced with auth context
+- [ ] Auth context available to all child routes
+- [ ] Dashboard route (`src/routes/index.tsx`) protected with beforeLoad guard
+- [ ] Unauthenticated users redirected to `/login` with redirect parameter
+- [ ] Redirect parameter preserves intended destination (e.g., `?redirect=/dashboard`)
+- [ ] Post-login redirect works correctly (users return to intended page)
+- [ ] Loading states handled during authentication checks
+- [ ] TypeScript compilation passes without errors
+- [ ] All protected routes implement consistent beforeLoad pattern
+- [ ] Authentication flow works end-to-end: login → redirect → access granted
+- [ ] Manual testing confirms protection works (try accessing protected routes while logged out)
+- [ ] Integration with existing auth context maintains all functionality
+
 #### 6.3 Create Profile Route
 
 **Priority**: Medium | **Effort**: Medium | **Type**: New Feature
@@ -1546,6 +1678,23 @@ Create the profile management page.
 - Handle form submission and updates
 - Success/error messaging
 - Navigation back to main app
+
+**Definition of Done**:
+
+- [ ] Profile route exists at `/profile` path
+- [ ] Route is protected (requires authentication)
+- [ ] Uses AppTemplate for consistent layout with main app
+- [ ] ProfileForm organism integrated and functional
+- [ ] Form submission updates user profile successfully
+- [ ] Success messages displayed after successful updates
+- [ ] Error messages displayed for validation failures or API errors
+- [ ] Navigation back to main app works (breadcrumb, back button, or menu)
+- [ ] Route integrates with route protection from Task 6.2
+- [ ] TypeScript compilation passes without errors
+- [ ] Form validation prevents invalid submissions
+- [ ] Profile updates reflect in UserMenu and other user displays
+- [ ] Mobile-responsive design maintains usability
+- [ ] Accessible with proper focus management and ARIA labels
 
 #### 6.4 Update Layout Component with UserMenu
 
@@ -1593,6 +1742,23 @@ export const Layout = () => {
   );
 };
 ```
+
+**Definition of Done**:
+
+- [ ] UserMenu component integrated into Layout header (top-right position)
+- [ ] UserMenu only visible when user is authenticated (`isAuthenticated` check)
+- [ ] Header layout updated to accommodate UserMenu without breaking existing design
+- [ ] Navigation structure maintains proper spacing and alignment
+- [ ] Responsive design works on mobile, tablet, and desktop
+- [ ] UserMenu displays user avatar and information correctly
+- [ ] Dropdown menu functions properly (open/close, keyboard navigation)
+- [ ] Logout functionality works from UserMenu
+- [ ] Profile navigation link works from UserMenu (when Task 6.3 complete)
+- [ ] TypeScript compilation passes without errors
+- [ ] Visual integration matches design system patterns
+- [ ] No layout shifts or visual bugs when UserMenu appears/disappears
+- [ ] Accessibility maintained (proper focus management, ARIA attributes)
+- [ ] Cross-browser compatibility verified
 
 ### 7. Hooks and State Management
 
