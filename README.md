@@ -1,127 +1,218 @@
 <p align="center">
- <img src=".github/images/react-starter.svg" alt="" />
+ <img src=".github/images/tick-tock-logo.svg" alt="Tick-Tock Logo" />
 </p>
 
-# React Starter Boilerplate
+# 🕐 Tick-Tock - Intelligent Time Logging
 
-A highly scalable and focused on performance and best practices boilerplate code for TypeScript based React SPA applications.
+**Tick-Tock** is a modern time logging application that transforms the way developers track their work. Instead of complex time tracking interfaces, simply write natural language messages and let our intelligent system create structured time logs automatically.
 
-This project was bootstrapped with [Vite](https://github.com/vitejs/vite) and modified by TSH team.
+Built with modern React 19 and TypeScript, powered by TanStack ecosystem for optimal performance and developer experience.
 
-Start your new React application in seconds!
+**🚀 Key Innovation**: Write time logs like journal entries, automatically sync with Jira, and manage everything through an intuitive calendar dashboard.
 
-![GitHub stars](https://img.shields.io/github/stars/TheSoftwareHouse/react-starter-boilerplate?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/TheSoftwareHouse/react-starter-boilerplate?style=social)
-![GitHub followers](https://img.shields.io/github/followers/TheSoftwareHouse?style=social)
+![Version](https://img.shields.io/github/package-json/v/IgorWnek/tick-tock-frontend)
+![React](https://img.shields.io/badge/React-19.1.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue)
+![TanStack Query](https://img.shields.io/badge/TanStack%20Query-5.84.1-orange)
+![License](https://img.shields.io/github/license/IgorWnek/tick-tock-frontend)
 
-![Discord](https://img.shields.io/discord/955763210420649995)
-![Version](https://img.shields.io/github/package-json/v/TheSoftwareHouse/react-starter-boilerplate)
-![GitHub License](https://img.shields.io/github/license/TheSoftwareHouse/react-starter-boilerplate)
+## ✨ Features
 
-## Features
+### 🤖 Natural Language Processing
 
-### Quick scaffolding
+Transform simple messages like "Worked on XYZ-1111 for 3 hours implementing authentication, had 1 hour meeting with team about XYZ-2222 planning" into structured time entries automatically.
 
-Generate React code snippets from the CLI by using Plop micro-generator framework.
+### 📊 Visual Calendar Dashboard
 
-### TypeScript
+- **Smart Status Indicators**: Orange (needs logging), Blue (draft entries), Green (completed)
+- **Quick Navigation**: Click any day to view or edit time logs
+- **Monthly Overview**: Clear visualization of your logging progress
 
-The best way to write modern frontend applications. Code is easier to understand. By using TypeScript it is more difficult to write invalid code as was the case in dynamically typed languages.
+### 🚀 Draft-First Workflow
 
-### Static code analysis
+- **Review Before Commit**: All logs start as drafts for your review
+- **Intelligent Refinement**: Request changes in natural language
+- **One-Click Sync**: Ship approved logs directly to Jira
 
-Focus on writing code, not formatting it! Code formatter and linter keeps the code clean which makes work and communication with other developers more effective!
+### 🔗 Seamless Jira Integration
 
-## How to bootstrap your React project
+- **Direct API Integration**: Real-time synchronization with Jira time tracking
+- **Task Validation**: Automatic verification of Jira task IDs
+- **Error Handling**: Robust retry logic and user feedback
 
-To start your new React project based on the `react-starter-boilerplate` you need to follow this steps:
+### 🎨 Modern User Experience
 
-1. Clone this repository:
+- **React 19 Features**: Actions, useActionState, and concurrent rendering
+- **Responsive Design**: Perfect on desktop, tablet, and mobile
+- **Dark Mode Support**: Automatic theme switching
+- **Accessibility First**: WCAG 2.1 AA compliant
+
+## 🚀 Quick Start
+
+Get Tick-Tock running locally in minutes:
+
+### Prerequisites
+
+- Node.js 20+ (required for optimal performance)
+- npm or yarn
+- Jira instance with API access (for production use)
+
+### Installation
+
+1. **Clone the repository**:
 
 ```shell
-git clone https://github.com/TheSoftwareHouse/react-starter-boilerplate.git
+git clone https://github.com/IgorWnek/tick-tock-frontend.git
+cd tick-tock-frontend
 ```
 
-2. Change the name of project directory to the name of your project.
-**Also don't forget to change the name of your application in `package.json` file.**
+2. **Install dependencies**:
 
-3. Restore git history of the project. To do that, run following commands:
 ```shell
-sudo rm -r .git
-git init
-git remote add origin <your empty project repository>
-git remote -v
+npm install
 ```
 
-4. Replace this file with `PROJECT_README.md` and fill all the placeholders with data about your project:
-```shell
-mv PROJECT_README.md README.md
-```
-
-5. Add all files to git history and create initial commit:
-```shell
-git add .
-git commit -m 'Initial commit'
-git push origin master
-```
-
-6. Copy the `.env.dist` file to `.env.local` and populate the environment variables with the values used in the local environment
+3. **Set up environment variables**:
 
 ```shell
 cp .env.dist .env.local
 ```
 
-Now, your project is bootstrapped successfully! 🎉
-
-You can install dependencies and start developing your React application 🚀
-
-## Scripts
+4. **Start the development server**:
 
 ```shell
-npm run [command_name]
+npm start
 ```
 
-- `start` - Launches the app in development mode on [http://localhost:3000](http://localhost:3000)
-- `build` - Compiles and bundles the app for deployment*
-- `build:ci` - Build command optimized for CI/CD pipelines
-- `build:analyze` - Builds the app and opens the rollup-plugin-visualizer report in the browser
-- `typecheck` - Validate the code using TypeScript compiler
-- `preview` - Boot up a local static web server that serves application build. It's an easy way to check if the production build looks OK on your local machine
-- `test` - Run unit tests with vitest
-- `coverage` - Run unit tests with code coverage calculation
-- `lint` - Validate the code using ESLint and Prettier
-- `lint:fix` - Validate and fix the code using ESLint and Prettier
-- `plop` - Run CLI with commands for code generation
-- `translations` - Run [Babelsheet](https://github.com/TheSoftwareHouse/babelsheet2) tool for fetch the latest translations
-- `serve:cypress` - Run Cypress E2E tests panel
-- `version` - Build CHANGELOG file base on git commits history
-- `e2e:open` - Run E2E tests panel
-- `e2e:ci:firefox`: Run E2E tests on Firefox browser in CI pipelines
-- `e2e:ci:chrome`: Run E2E tests on Chrome browser in CI pipelines
+5. **Open your browser** and navigate to [http://localhost:3000](http://localhost:3000)
 
-*See the section about [deployment](https://vitejs.dev/guide/static-deploy.html) for more information.
+🎉 **You're ready to start logging time!** The app runs with MSW (Mock Service Worker) by default, so you can test all features without a backend.
 
-## Table of Contents
+### Production Setup
 
-1. [Technology stack](/docs/01-technology-stack.md)
-2. [Application structure](/docs/02-application-structure.md)
-3. [React Query abstraction](/docs/03-react-query-abstraction.md)
-4. [Using plop commands](/docs/04-using-plop-commands.md)
-5. [E2E tests](/docs/05-e2e-tests.md)
+For production deployment, configure these environment variables in `.env.local`:
 
-## How to Contribute
+- `VITE_API_BASE_URL` - Your backend API endpoint
+- `VITE_JIRA_BASE_URL` - Your Jira instance URL
+- `VITE_SENTRY_DSN` - Error monitoring (optional)
 
-Anyone and everyone is welcome to contribute. Start by checking out the list of [open issues](https://github.com/TheSoftwareHouse/react-starter-boilerplate/issues).
+## 📜 Available Scripts
 
-However, if you decide to get involved, please take a moment to review the [guidelines](CONTRIBUTING.md).
+```shell
+npm run [command]
+```
 
-## License
+### Development
 
-Copyright © 2021-present The Software House. This source code is licensed under the MIT license found in the
-[LICENSE](LICENSE.md) file.
+- `start` - Launch development server with hot reloading on [http://localhost:3000](http://localhost:3000)
+- `typecheck` - Run TypeScript type checking without emitting files
+- `test` - Run unit tests with Vitest
+- `coverage` - Generate test coverage report
+
+### Building & Deployment
+
+- `build` - Create optimized production build (includes TypeScript check)
+- `build:ci` - Production build optimized for CI/CD pipelines
+- `build:analyze` - Build with bundle analysis visualization
+- `preview` - Preview production build locally
+
+### Code Quality
+
+- `lint` - Validate code with ESLint and Stylelint
+- `lint:fix` - Auto-fix linting issues where possible
+
+### Testing & E2E
+
+- `e2e` - Run end-to-end tests (default browser)
+- `e2e:firefox` - Run E2E tests in Firefox
+- `e2e:chrome` - Run E2E tests in Chrome
+- `e2e:safari` - Run E2E tests in Safari
+- `e2e:debug` - Run E2E tests in debug mode
+
+### Development Tools
+
+- `plop` - Interactive code generation CLI
+- `translations` - Fetch latest translations using Babelsheet
+
+## 🏗️ Technology Stack
+
+Tick-Tock is built with modern, battle-tested technologies:
+
+### Core Framework
+
+- **[React 19](https://react.dev/)** - Latest React with Actions, useActionState, and concurrent features
+- **[TypeScript 5.9](https://www.typescriptlang.org/)** - Full type safety and modern JavaScript features
+- **[Vite 5](https://vitejs.dev/)** - Lightning-fast build tool and development server
+
+### Routing & State Management
+
+- **[TanStack Router](https://tanstack.com/router/latest)** - Type-safe routing with built-in data fetching
+- **[TanStack Query 5](https://tanstack.com/query/latest)** - Powerful server state management with caching
+- **[TanStack Form](https://tanstack.com/form/latest)** - Performant, headless form state management
+
+### UI & Styling
+
+- **[TailwindCSS 4](https://tailwindcss.com/)** - Utility-first CSS framework with modern features
+- **[Shadcn/UI](https://ui.shadcn.com/)** - Beautiful, accessible components built on Radix UI
+- **[Lucide React](https://lucide.dev/)** - Modern icon library with 1000+ icons
+
+### Development & Testing
+
+- **[Vitest](https://vitest.dev/)** - Fast unit testing with native ESM support
+- **[Testing Library](https://testing-library.com/)** - Simple and complete testing utilities
+- **[MSW](https://mswjs.io/)** - API mocking for development and testing
+- **[Playwright](https://playwright.dev/)** - Reliable end-to-end testing
+
+### Quality & Performance
+
+- **[ESLint](https://eslint.org/)** - Code linting with React 19 and TypeScript rules
+- **[Prettier](https://prettier.io/)** - Consistent code formatting
+- **[Husky](https://typicode.github.io/husky/)** - Git hooks for quality enforcement
+
+## 📚 Documentation
+
+1. [Technology Stack](/docs/01-technology-stack.md) - Detailed overview of all technologies used
+2. [Application Structure](/docs/02-application-structure.md) - Code organization and architecture
+3. [TanStack Query Integration](/docs/03-react-query-abstraction.md) - Data fetching patterns
+4. [Code Generation](/docs/04-using-plop-commands.md) - Using Plop for rapid development
+5. [E2E Testing](/docs/05-e2e-tests.md) - End-to-end testing setup and patterns
+
+### Additional Resources
+
+- [MVP Documentation](mvp.md) - Complete feature specifications and user flows
+- [Shadcn/UI Integration](SHADCN_TAILWIND_INTEGRATION.md) - UI component library setup
+- [Development Workflow](.github/instructions/development.instructions.md) - Complete development guide
+
+## 🎯 Core User Flow
+
+1. **Dashboard View**: See your time logging status at a glance
+2. **Natural Input**: Write "Worked on XYZ-123 for 3 hours fixing bugs"
+3. **AI Processing**: System creates structured time entries automatically
+4. **Review & Refine**: Check drafts, request changes if needed
+5. **One-Click Sync**: Ship approved logs directly to Jira
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+
+- Code style and standards
+- Development workflow
+- Pull request process
+- Issue reporting
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+
+## 🚀 What's Next
+
+- **AI-Powered Parsing**: Enhanced natural language understanding
+- **Team Collaboration**: Shared time tracking and reporting
+- **Mobile App**: Native iOS and Android applications
+- **Analytics Dashboard**: Advanced reporting and insights
 
 ---
-<sup>
-Made with ♥ by The Software House (<a href="https://tsh.io">website</a>, <a href="https://tsh.io/blog">blog</a>)
-and <a href="https://github.com/TheSoftwareHouse/react-starter-boilerplate/graphs/contributors">contributors</a>.
-</sup>
+
+**Built with ❤️ by [Igor Wnek](https://github.com/IgorWnek)** • [Project Repository](https://github.com/IgorWnek/tick-tock-frontend)
+
+Check out the **IKcode GitHub profile** which contains most of the code related to my YouTube episodes: [IKcode](https://github.com/ikcode-dev)
