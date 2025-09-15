@@ -1,0 +1,1 @@
+export { SplitViewCalendar } from './SplitViewCalendar';

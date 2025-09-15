@@ -4,8 +4,8 @@ import { useNavigate } from '@tanstack/react-router';
 
 import { MinimalistCalendar } from './MinimalistCalendar';
 import { DashboardCalendar } from './DashboardCalendar';
-import { SplitViewCalendar } from './SplitViewCalendar';
 
+import { SplitViewCalendar } from '@/design-system/organisms/SplitViewCalendar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
